@@ -1,0 +1,11 @@
+torch==1.9.0
+torchvision==0.10.0
+opencv-python
+tqdm
+pyyaml
+pytorchyolo
+pandas
+seaborn
+natsort
+kornia
+setuptools==59.5.0

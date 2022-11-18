@@ -1,0 +1,43 @@
+DATA:
+  CLASS_NAME_FILE: 'configs/namefiles/coco.names' # a relative path
+  AUGMENT: 1 # Gate of input data augmentation: 1 to augment, 0 otherwise
+
+  TRAIN:
+    IMG_DIR: 'data/INRIAPerson/Train/pos'
+    LAB_DIR: 'data/INRIAPerson/Train/labels'
+
+DETECTOR:
+  NAME: ["Faster_RCNN"]   # ["YOLOV3", "YOLOV3-TINY", "YOLOV4", "YOLOV4-TINY", "YOLOV5", "FASTER_RCNN", "SSD"] Case insensitive
+  # Model ensembling supported. Note that FasterRCNN & SSD are PyTorch models with 91 prediction classes(coco-91.names),
+  # while the others are with 80 prediction classes(coco.names). But class 'person' are in the same index 0, it means the current version
+  # supports to ensemble all models only when the target class is "person" (i.e. class index=0).
+  # Otherwise you can only to ensemble models with the same namefiles.
+
+  INPUT_SIZE: [416, 416]
+  BATCH_SIZE: 8           # batch size when training. BATCH_SIZE = const 1 when evaluating
+
+  CONF_THRESH: 0.5        # confidence thresh in NMS
+  IOU_THRESH: 0.45        # iou thresh in NMS
+
+  PERTURB:
+    GATE: null # ['shakedrop', null]
+
+ATTACKER:
+  METHOD: "pgd" # choose the base attack algorithm from: ['bim', 'pgd', 'mim', 'optim', 'optim-sgd', 'optim-adam', 'optim-nesterov']
+  EPSILON: 255
+  MAX_EPOCH: 1000 # maximum epoches
+  ITER_STEP: 5 # Attack steps in every mini-batch
+  STEP_LR: 0.03 # update step size for every (mini-batch) step. e.g. FGSM: STEP_LR * grad.sign
+  tv_eta: 2.5
+  topx_conf: 1 # top-k confidence to calculate loss, default: 1.
+
+  ATTACK_CLASS: '0'  # attack class index (corresponds to the above namesfile). Now we support to attack class id='0'(person) only.
+  LOSS_FUNC: "obj-tv" # choose LossFn from [null, 'descend-mse', 'ascend-mse', 'obj-tv']
+  LR_SCHEDULER: 'ALRS' # choose LR from ['plateau', 'ALRS', 'warmupALRS', 'cosine', 'ALRS_LowerTV']
+
+  PATCH:
+    WIDTH: 300 # Patch width
+    HEIGHT: 300 # Patch height
+    SCALE: 0.2 # patch scale when attaching patch on bbox (the SCALE is default as P9's scale)
+    INIT: "gray" # patch init, choose from ['gray', 'random', 'white']
+    TRANSFORM: ['jitter', 'median_pool', 'rotate'] # list a subset list from: ['jitter', 'median_pool', 'rotate', 'shift', 'cutout']
