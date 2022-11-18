@@ -1,8 +1,9 @@
 cuda=$1
-save=$2
 
-save_dir=$PROJECT_DIR/eval/inria/demo
+
 PROJECT_DIR=$(pwd)
+patch_path=$PROJECT_DIR/results/v5-demo.png
+save_dir=$PROJECT_DIR/eval/inria/demo
 targets=(eval/coco80 eval/coco91)
 
 for config in ${targets[@]}

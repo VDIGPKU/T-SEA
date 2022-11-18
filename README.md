@@ -1,5 +1,9 @@
 # T-SEA: Transfer-based Self-Ensemble Attack on Object Detection
 
+[**English**](https://github.com/VDIGPKU/T-SEA/blob/main/README.md)
+| [**中文**](https://github.com/VDIGPKU/T-SEA/blob/main/README-cn.md)
+
+
 [**Paper**](https://arxiv.org/abs/2211.09773)
 | Hao Huang, Ziyan Chen, Huanran Chen, Yongtao Wang, Kevin Zhang
 
@@ -8,6 +12,7 @@ An official implementation of T-SEA, and also a framework provided to achieve un
 
 ![](./figures/pipeline.png)
 
+If T-SEA is helpful for your work, please help star this repo. Thanks! :-)
 
 ## Update
 * 2022.11.18 - This repo is created.
@@ -43,11 +48,23 @@ Make sure you have the pre-trained detector-weight files and data prepared.
 # or parse the annotations based on provided util scripts.
 # See more details in utils/preprocesser/README.md
 ```
-```bash
-# download all model weights file in weights/.
-# Run in the root proj dir.
-bash ./detlib/weights/download.sh
 
+You can generate detection labels of your models, 
+see more details in **utils/preprocessor/README.md**. 
+You can also download our experimental data from [**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
+. The labels and patches are included.
+
+You can download model weights by running:
+```bash
+# Run in the root proj dir.
+# Download models.
+bash ./detlib/weights/download.sh
+# To create links to the corresponding detector modules.
+bash ./detlib/weights/setup.sh
+```
+You can also download the supported models fom the aforementioned links.
+Your file tree of the downloaded weights should like this:
+```bash
 # The weight file tree should like this.
 └── detlib
     ├── base.py
@@ -58,15 +75,7 @@ bash ./detlib/weights/download.sh
         ├── yolov2.weights
         ├── yolov3-tiny.weights
         ├── ...
-        
-# To create links to the corresponding detector modules.
-# Run in the root proj dir.
-bash ./detlib/weights/setup.sh
 ```
-
-You can download the experimental data (labels, model weights and patches) 
-from [**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
-| [**BaiduCloud**]().
 
 ### Run
 #### Evaluation
@@ -78,7 +87,7 @@ bash ./scropts/preprocesser.sh
 ```
 
 ```bash
-# Or to run the full command:
+# Or run the full command:
 # replace the $patch_path as patch of your adversarial patch, 
 # and $PROJECT_DIR as the absolute path of your project.
 python evaluate.py \
@@ -99,11 +108,14 @@ bash ./scropts/train.sh
 ```
 
 ```bash
-# Or to run the full command:
+# Or run the full command:
 python train_optim.py \
 -cfg=demo.yaml \
 -s=./results/demo \
 -n=demo # patch name & tensorboard name
+
+# For detailed supports of the arguments:
+python train_optim.py -h
 ```
 Modify the config .yaml files for custom settings, see details in **configs/README.yaml**.
 
@@ -114,18 +126,18 @@ and support evaluations on given data & models.
 
 Three individual core modules: Attack, Detlib & Utils. An overview: 
 * **Detlib**
-Dettlib is the detection module, which implements the input and output interfaces for individual detectors as well as an agent for unified detector calls.
+Detlib is the detection module, which implements the input and output interfaces for individual detectors as well as an agent for unified detector calls.
 Model perturbation(e.g. Shakedrop) function is achieved and implemented inside detector module.
   * **HHDet** (PyTorch) - Yolo V2, V3, V3-tiny, V4, V4tiny, V5
     * See **acknowledgements** in README.md in the main project directory.
   * **TorchDet** (PyTorch) - Faster RCNN(renet50), ssd(vgg16) & ssdlite(mobilenet v3 large)
     * Rewritten from Torch official detection models.
 
-  * **Cutom** - You can support your custom models based on this framework. See more details in **detlib/README.md**.
+  * **Custom** - You can support your custom models based on this framework. See more details in **detlib/README.md**.
 
 
 * **Attack Lib**
-Attack is the attack module, which implements the base attack methods and a core agent class for attack on detectors.
+Attack Lib is the attack module, which implements the base attack methods and a core agent class for attack on detectors.
   * **base attack methods**
       * FGSM-based attack methods: **BIM**, **MIM** & **PGD**.
       * Optimizer: **SGD** & **Adam**.
@@ -144,10 +156,10 @@ See more details in the README.md file in the corresponding modules.
 * **HHDet**
   * Yolo V2 [**PyTorch implementation**](https://github.com/ayooshkathuria/pytorch-yolo2)
   | [**Paper**](https://arxiv.org/abs/1506.02640)
-  | [**Page**]((https://pjreddie.com/darknet/yolo/))
+  | [**Page**](https://pjreddie.com/darknet/yolo/)
   * Yolo V3 [**PyTorch implementation**](https://github.com/eriklindernoren/PyTorch-YOLOv3)
   | [**Paper**](https://arxiv.org/abs/1804.02767v1)
-  | [**Page**]((https://pjreddie.com/darknet/yolo/))
+  | [**Page**](https://pjreddie.com/darknet/yolo/)
   * Yolo V4 [**PyTorch implementation**](https://github.com/Tianxiaomo/pytorch-YOLOv4)
   | [**Paper**](https://arxiv.org/abs/2004.10934)
   | [**Source Code**](https://github.com/AlexeyAB/darknet)
@@ -168,4 +180,4 @@ See more details in the README.md file in the corresponding modules.
   * Tensorboard.
 
 ## Contact Us
-Email us if you have any problem about this work: huanghao@stu.pku.edu.cn.
+If you have any problem about this work, please feel free to reach us out at `huanghao@stu.pku.edu.cn`.
