@@ -1,11 +1,7 @@
 detlib/weights/
 data/
-results/
 checkpoints/
-bak/
-demo/
 .idea
 *.weights
-*.png
 *.avi
 *.log
