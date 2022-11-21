@@ -14,12 +14,11 @@ from utils.det_utils import inter_nms
 class UniversalAttacker(object):
     """An attacker agent to coordinate the detect & base attack methods for universal attacks."""
 
-    def __init__(self, cfg, device: torch.device, model_distribute: bool=False):
+    def __init__(self, cfg, device: torch.device):
         """
 
         :param cfg: Parsed proj config object.
-        :param device:
-        :param model_distribute:
+        :param device: torch.device, cpu or cuda
         """
         self.cfg = cfg
         self.device = device
@@ -32,8 +31,7 @@ class UniversalAttacker(object):
         self.vlogger = None
 
         self.patch_applier = PatchRandomApplier(device, cfg_patch=cfg.ATTACKER.PATCH)
-        self.detectors = init_detectors(cfg_det=cfg.DETECTOR, distribute=model_distribute)
-        self.model_distribute = model_distribute
+        self.detectors = init_detectors(cfg_det=cfg.DETECTOR)
 
         # differentiable Kornia augmentation method
         # self.data_transformer = DataTransformer(device, rand_rotate=0)
@@ -116,7 +114,7 @@ class UniversalAttacker(object):
         :return:
         """
         if adv_patch is None: adv_patch = self.universal_patch
-        img_tensor = self.patch_applier(img_tensor, adv_patch, self.all_preds, gates=self.cfg.ATTACKER.PATCH.TRANSFORM)
+        img_tensor = self.patch_applier(img_tensor, adv_patch, self.all_preds)
 
         # 1st inference: get bbox; 2rd inference: get detections of the adversarial patch
 
@@ -165,18 +163,9 @@ class UniversalAttacker(object):
         detectors_loss = []
         self.attacker.begin_attack()
         if mode == 'optim' or mode == 'sequential':
-            if self.model_distribute and False:
-                # TODO: check whether parallel can be a good approximation of second derivative?
-                pool = multiprocessing.Pool(processes=len(self.detectors))
-                for detector in self.detectors:
-                    detectors_loss.append(pool.apply_async(func=self.attacker.non_targeted_attack,
-                                                           args=(img_tensor_batch, detector)))
-                pool.close()
-                pool.join()
-            else:
-                for detector in self.detectors:
-                    loss = self.attacker.non_targeted_attack(img_tensor_batch, detector)
-                    detectors_loss.append(loss)
+            for detector in self.detectors:
+                loss = self.attacker.non_targeted_attack(img_tensor_batch, detector)
+                detectors_loss.append(loss)
         elif mode == 'parallel':
             detectors_loss = self.parallel_attack(img_tensor_batch)
         self.attacker.end_attack()

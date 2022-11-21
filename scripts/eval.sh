@@ -4,7 +4,7 @@ cuda=$1
 PROJECT_DIR=$(pwd)
 patch_path=$PROJECT_DIR/results/v5-demo.png
 save_dir=$PROJECT_DIR/eval/inria/demo
-targets=(eval/coco80 eval/coco91)
+targets=(eval/coco80 eval/coco91) # Run twice to test both yolo-models(coco80) and torch-models(coco91).
 
 for config in ${targets[@]}
 do
@@ -13,7 +13,7 @@ do
 
   cmd="CUDA_VISIBLE_DEVICES=${device} python evaluate.py \
   -p $patch_path \
-  -cfg ./configs/$config \
+  -cfg ./configs/$config.yaml \
   -lp $PROJECT_DIR/data/INRIAPerson/Test/labels \
   -dr $PROJECT_DIR/data/INRIAPerson/Test/pos \
   -s $save_dir \

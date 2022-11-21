@@ -12,15 +12,16 @@ mkdir $save_dir
 CUDA_VISIBLE_DEVICES=$cuda nohup python train_optim.py \
 -cfg=demo.yaml \
 -s=$save_dir \
--n=demo \
+-n=v5-combine-demo \
 $args \
 >$save_dir/test.log 2>&1 &
+
+echo "Training... Patch & logs will be saved to $save_dir/"
 
 # use 'python train_optim.py -h' for detailed supports of the arguments.
 
 
 ########## You can run train_fgsm.py script from fgsm-based methods.
-
 #CUDA_VISIBLE_DEVICES=$cuda nohup python train_fgsm.py \
 #-cfg=method/v5-bim-combine.yaml \
 #-s=$save_dir \

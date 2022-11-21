@@ -11,6 +11,7 @@ from utils.preprocesser.gen_det_labels import Utils
 from utils.parser import ConfigParser, logger_cfg
 from utils.metrics.main import compute_mAP
 from scripts.dict import MAP_PATHS
+from utils.utils import dir_check, path_remove
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -18,30 +19,6 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # from utils.det_utils import plot_boxes_cv2
 label_postfix = '-rescale-labels'
-
-def path_remove(path):
-    if os.path.exists(path):
-        try:
-            shutil.rmtree(path) # a dir
-        except:
-            os.remove(path) # a symbolic link
-
-def dir_check(save_path, child_paths, rebuild=False):
-    # if the target path exists, it will be deleted (for empty dirt) and rebuild-up
-    def buid(path, rebuild):
-        if rebuild:
-            path_remove(path)
-        try:
-            os.makedirs(path, exist_ok=True)
-        except:
-            pass
-    buid(save_path, rebuild=rebuild)
-    for child_path in child_paths:
-        child_path = child_path.lower()
-        tmp_path = os.path.join(save_path, child_path)
-        for path in MAP_PATHS.values():
-            ipath = os.path.join(tmp_path, path)
-            buid(ipath, rebuild)
 
 
 class UniversalPatchEvaluator(UniversalAttacker):
@@ -65,6 +42,8 @@ def get_save(args):
         return path.split('.')[0]
     prefix = get_prefix(args.patch)
     args.save = os.path.join(args.save, prefix)
+    if os.path.exists(args.save):
+        shutil.rmtree(args.save)
     return args
 
 
@@ -221,8 +200,8 @@ if __name__ == '__main__':
     parser.add_argument('-e', '--eva_class', type=str, default='0', help="The class to attack. '-1': all classes, '-2': attack seen classes(ATTACK_CLASS in cfg file), '-3': attack unseen classes(all_class - ATTACK_CLASS); or custom '0, 2:5, 10'.")
     parser.add_argument('-q', '--quiet', action='store_true', help='logger none if set true')
     args = parser.parse_args()
-    cfg = ConfigParser(args.cfg)
 
+    cfg = ConfigParser(args.cfg)
     args = get_save(args)
     # args, evaluator = eval_init(args, cfg)
     det_mAPs, gt_mAPs, ori_mAPs = eval_patch(args, cfg)
@@ -238,4 +217,5 @@ if __name__ == '__main__':
     dict2txt(gt_mAPs, os.path.join(args.save, 'gt-mAP.txt'))
     if not args.quiet:
         print("det dict      mAP :", det_dict)
+        print("See results in path ", args.save)
 

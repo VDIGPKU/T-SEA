@@ -1,12 +1,6 @@
 DATA:
-  CLASS_NAME_FILE: 'configs/namefiles/coco.names'
+  CLASS_NAME_FILE: 'configs/namefiles/coco80.names'
   AUGMENT: 0
-  TRAIN:
-    IMG_DIR: 'data/INRIAPerson/Train/pos'
-    LAB_DIR: 'data/INRIAPerson/Train/pos/labels'
-  TEST:
-    IMG_DIR: 'data/INRIAPerson/Test/pos'
-    LAB_DIR: 'data/INRIAPerson/Test/labels'
 
 DETECTOR:
   NAME: ['YOLOV2', "YOLOV3", "YOLOV3-TINY", "YOLOV4", "YOLOV4-TINY", "YOLOV5"] # YOLOV3, YOLOV4, YOLOV5

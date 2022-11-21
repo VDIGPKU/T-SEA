@@ -1,6 +1,5 @@
 from utils.solver import *
-from attack.methods import LinfBIMAttack, LinfMIMAttack, LinfPGDAttack, OptimAttacker, \
-    FishAttacker, SmoothFishAttacker, OptimAttackerWithRecord, RSCchr, StrengthenWeakPointAttacker
+from attack.methods import LinfBIMAttack, LinfMIMAttack, LinfPGDAttack, OptimAttacker
 from utils.solver.loss import *
 
 scheduler_factory = {

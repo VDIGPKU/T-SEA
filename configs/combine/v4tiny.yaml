@@ -1,9 +1,9 @@
 DATA:
-  CLASS_NAME_FILE: 'configs/namefiles/coco.names'
+  CLASS_NAME_FILE: 'configs/namefiles/coco80.names'
   AUGMENT: 1
   TRAIN:
     IMG_DIR: 'data/INRIAPerson/Train/pos'
-    LAB_DIR: 'data/INRIAPerson/Train/labels/yolo-labels'
+    LAB_DIR:
 
 DETECTOR:
   NAME: ["YOLOV4-tiny"]

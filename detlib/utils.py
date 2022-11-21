@@ -12,19 +12,12 @@ from detlib.HHDet import HHYolov2, HHYolov3, HHYolov4, HHYolov5
 from detlib.torchDet import TorchFasterRCNN, TorchSSD
 
 
-def init_detectors(cfg_det: object=None, distribute: bool =False):
+def init_detectors(cfg_det: object=None):
     detector_names = cfg_det.NAME
     detectors = []
-    if distribute:
-        assert torch.cuda.device_count() >= len(detector_names), \
-            'available device should bigger than num_detectors'
-        for i, detector_name in enumerate(detector_names):
-            detector = init_detector(detector_name, cfg_det, device=torch.device(f'cuda:{i}'))
-            detectors.append(detector)
-    else:
-        for detector_name in detector_names:
-            detector = init_detector(detector_name, cfg_det)
-            detectors.append(detector)
+    for detector_name in detector_names:
+        detector = init_detector(detector_name, cfg_det)
+        detectors.append(detector)
     return detectors
 
 

@@ -782,7 +782,7 @@ def load_mosaic9(self, index):
 
         # Image
         img9[y1:y2, x1:x2] = img[y1 - pady:, x1 - padx:]  # img9[ymin:ymax, xmin:xmax]
-        hp, wp = h, w   previous
+        hp, wp = h, w   # height, width previous
 
     # Offset
     yc, xc = (int(random.uniform(0, s)) for _ in self.mosaic_border)  # mosaic center x, y

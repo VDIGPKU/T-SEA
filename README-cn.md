@@ -10,9 +10,11 @@ T-SEA官方执行代码仓库, 同时该仓库提供了一个用来制作通用�
 
 ![](./figures/pipeline.png)
 
+如果本仓库对您的工作有帮助，请帮忙点亮star~ Thanks! :-D
 
 ## 更新
-* 2022.11.18 - 创建本仓库
+* 2022.11.21 - 修复已知的运行bugs。
+* 2022.11.18 - 创建本仓库。
 
 
 ## 安装
@@ -26,7 +28,7 @@ pip install -r requirements.txt
 ### 模型 & 数据
 请确保您已经准备好了预训练模型及数据。需要准备的文件主要包括：
 * 模型: 预训练的检测器模型权重。
-* 数据集: 数据集及对应的检测标签（在测试时可以选择检测标签或者标注标签为GT）。
+* 数据集: 数据、标注标签(可选，测试时选用)及对应的检测标签(可选，测试时选用）。
 
 ```bash
 # 请将数据放在data/路径下
@@ -44,6 +46,7 @@ pip install -r requirements.txt
 
 本仓库支持从给定的模型中生成检测标签，在**utils/preprocessor/README.md**查看更多细节介绍。
 我们在[**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
+| [**BaiduCloud**]([**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3))
 提供了实验数据，包括基于数据集检测标签及对抗补丁demo。
 
 您可以通过以下命令来下载模型权重：
@@ -76,19 +79,22 @@ bash ./detlib/weights/setup.sh
 我们提供了 **Mean Average Precision(mAP)** 作为测试量化指标。 
 ```bash
 # 直接运行提供的示例脚本来对抗补丁样例测试
-bash ./scropts/eval.sh
+bash ./scripts/eval.sh
 ```
 
 ```bash
-# 或运行完整命令来进行自定义测试
-# 替换$patch_path为指定的对抗补丁所在路径、替换$PROJECT_DIR为项目绝对路径.
+# 或运行完整命令来进行自定义测试，在项目根目录执行：
+# 测试yolo-models(coco80):
 python evaluate.py \
--p $patch_path \
--cfg ./configs/preprocesser/coco80.yaml \
--lp $PROJECT_DIR/preprocesser/INRIAPerson/Test/labels \
--dr $PROJECT_DIR/preprocesser/INRIAPerson/Test/pos \
--s ./preprocesser/test \
+-p ./results/v5-demo.png \
+-cfg ./configs/eval/coco80.yaml \
+-lp ./data/INRIAPerson/Test/labels \
+-dr ./data/INRIAPerson/Test/pos \
+-s ./data/test \
 -e 0 # 攻击类别id
+# 测试torch-models(coco91): 
+# 以./configs/eval/coco91.yaml作为-cfg参数运行上述命令
+
 
 # 查看参数帮助
 python evaluate.py -h
@@ -96,15 +102,16 @@ python evaluate.py -h
 #### 对抗补丁训练
 ```bash
 # 直接运行提供的脚本来进行一个demo对抗补丁的训练
-bash ./scropts/train.sh
+bash ./scripts/train.sh 0 -np
+# 参数: 0 gpu-id, -np 启动一个新的tensorboard进程
 ```
 
 ```bash
 # 或者通过运行完整命令来自定义对抗补丁训练
-python train_optim.py \
+python train_optim.py -np \
 -cfg=demo.yaml \
 -s=./results/demo \
--n=demo # 对抗补丁保存图片名&tensorboard日志文件名
+-n=v5-combine-demo # 对抗补丁保存图片名&tensorboard日志文件名
 
 # 查看参数帮助
 python train_optim.py -h
@@ -154,18 +161,18 @@ Attack Lib攻击算法库，负责实现基础攻击方法及一个核心攻击�
   | [**Paper**](https://arxiv.org/abs/2004.10934)
   | [**Source Code**](https://github.com/AlexeyAB/darknet)
   * Yolo V5 [**PyTorch implementation**](https://github.com/ultralytics/yolov5)
-* **TorchDet**: 采用PyTorch官方库提供的模型（部分经改写）
+* **TorchDet**: 采用PyTorch官方库提供的检测模型（部分经改写）
   * FasterRCNN(resnet50 & mobilenet-v3 large), ssd(vgg16) & ssdlite(mobilenet-v3 large).
 
 
 ### Attack Lib
 * **Reference**: Fooling automated surveillance cameras: adversarial patches to attack person detection.
-[**implementation**](https://gitlab.com/EAVISE/adversarial-yolo)
+[**Source Code**](https://gitlab.com/EAVISE/adversarial-yolo)
 | [**Paper**](http://openaccess.thecvf.com/content_CVPRW_2019/papers/CV-COPS/Thys_Fooling_Automated_Surveillance_Cameras_Adversarial_Patches_to_Attack_Person_Detection_CVPRW_2019_paper.pdf)
 
 ### Utils
 * **Metrics**
-  * mAP [**implementation**](https://github.com/Cartucho/mAP).
+  * mAP [**Implementation**](https://github.com/Cartucho/mAP).
 * **Plot**
   * Tensorboard.
 

@@ -95,7 +95,6 @@ if __name__ == '__main__':
     parser.add_argument('-cfg', '--cfg', type=str, default='optim.yaml', help="A relative path of the .yaml proj config file.")
     parser.add_argument('-n', '--board_name', type=str, default=None, help="Name of the Tensorboard as well as the patch name.")
     parser.add_argument('-d', '--debugging', action='store_true', help="Will not start tensorboard process if debugging=True.")
-    parser.add_argument('-dis', '--model_distribute', action='store_true', help="To distribute models in different GPUs.")
     parser.add_argument('-s', '--save_path', type=str, default='./results/exp2/optim', help="Path to save the adversarial patch.")
     parser.add_argument('-np', '--new_process', action='store_true', default=False, help="Start new TensorBoard server process.")
     parser.add_argument('-sp', '--save_process', action='store_true', default=False, help="Save patches from intermediate epoches.")
@@ -107,6 +106,6 @@ if __name__ == '__main__':
     save_patch_name = args.cfg.split('/')[-1].split('.')[0] if args.board_name is None else args.board_name
 
     cfg = ConfigParser(args.cfg)
-    detector_attacker = UniversalAttacker(cfg, device, model_distribute=args.model_distribute)
+    detector_attacker = UniversalAttacker(cfg, device)
     cfg.show_class_label(cfg.attack_list)
     train_uap(cfg, detector_attacker, save_patch_name, args)
