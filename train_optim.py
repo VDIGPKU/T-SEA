@@ -87,7 +87,6 @@ def train_uap(cfg: ConfigParser,
 if __name__ == '__main__':
     import argparse
     import warnings
-
     warnings.filterwarnings('ignore')
 
     parser = argparse.ArgumentParser()

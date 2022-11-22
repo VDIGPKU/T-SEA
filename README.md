@@ -138,7 +138,8 @@ Three individual core modules: Attack, Detlib & Utils. An overview:
 Detlib is the detection module, which implements the input and output interfaces for individual detectors as well as an agent for unified detector calls.
 Model perturbation(e.g. Shakedrop) function is achieved and implemented inside detector module.
   * **HHDet** (PyTorch) - Yolo V2, V3, V3-tiny, V4, V4tiny, V5
-    * See **acknowledgements** in README.md in the main project directory.
+    * See [**Acknowledgements**](#Acknowledgements) for introduction of the models.
+    * Note that we've modified certain parts of the original code version to fit our modules (and to add functions).
   * **TorchDet** (PyTorch) - Faster RCNN(renet50), ssd(vgg16) & ssdlite(mobilenet v3 large)
     * Rewritten from Torch official detection models.
 
@@ -152,10 +153,14 @@ Attack Lib is the attack module, which implements the base attack methods and a 
       * Optimizer: **SGD** & **Adam**.
 
 * **Utils**
-  * Config parser, data preprocessing utils
-  * solver - loss fn & schedulers
-  * metrics - mAP 
-  * Plot - TensorBoard utils
+  * **core**
+    * transformer - differentiable data transform augmentation
+    * parser - config parser
+    * convertor - for data formats conversion
+  * **preprocessing** - for label parse and generation
+  * **solver** - loss fn & schedulers
+  * **metrics** - mAP 
+  * **plot** - TensorBoard
 
 See more details in the README.md file in the corresponding modules.
 
@@ -169,20 +174,28 @@ See more details in the README.md file in the corresponding modules.
 
 ### Detlib
 * **HHDet**
-  * Yolo V2 [**PyTorch implementation**](https://github.com/ayooshkathuria/pytorch-yolo2)
-  | [**Paper**](https://arxiv.org/abs/1506.02640)
-  | [**Page**](https://pjreddie.com/darknet/yolo/)
-  * Yolo V3 [**PyTorch implementation**](https://github.com/eriklindernoren/PyTorch-YOLOv3)
-  | [**Paper**](https://arxiv.org/abs/1804.02767v1)
-  | [**Page**](https://pjreddie.com/darknet/yolo/)
-  * Yolo V4 [**PyTorch implementation**](https://github.com/Tianxiaomo/pytorch-YOLOv4)
-  | [**Paper**](https://arxiv.org/abs/2004.10934)
-  | [**Source Code**](https://github.com/AlexeyAB/darknet)
+  * Yolo V2
+      [**PyTorch implementation**](https://github.com/ayooshkathuria/pytorch-yolo2)
+    | [**Paper**](https://arxiv.org/abs/1506.02640)
+    | [**Page**](https://pjreddie.com/darknet/yolo/)
+  * Yolo V3
+      [**PyTorch implementation**](https://github.com/eriklindernoren/PyTorch-YOLOv3)
+    | [**Paper**](https://arxiv.org/abs/1804.02767v1)
+    | [**Page**](https://pjreddie.com/darknet/yolo/)
+  * Yolo V4
+      [**PyTorch implementation**](https://github.com/Tianxiaomo/pytorch-YOLOv4)
+    | [**Paper**](https://arxiv.org/abs/2004.10934)
+    | [**Source Code**](https://github.com/AlexeyAB/darknet)
   * Yolo V5 [**PyTorch implementation**](https://github.com/ultralytics/yolov5)
-* **TorchDet**: provided by PyTorch Lib (partially rewritten)
-  * FasterRCNN(resnet50 & mobilenet-v3 large), ssd(vgg16) & ssdlite(mobilenet-v3 large).
-
-
+* **TorchDet**
+  * from **PyTorch** Detection Lib [**Docs**](https://pytorch.org/vision/0.10/models.html) | Pytorch [**Paper**](https://arxiv.org/abs/1912.01703)
+  * **FasterRCNN**(resnet50 & mobilenet-v3 large) 
+      [**Paper**](https://arxiv.org/abs/1506.01497)
+  * **SSD** (vgg16)
+      [**Paper**](https://arxiv.org/abs/1512.02325)
+  * **SSDlite** (mobilenet-v3 large)
+      [**Paper**](https://arxiv.org/abs/1905.02244)
+  
 ### Attack Lib
 * **Reference**: Fooling automated surveillance cameras: adversarial patches to attack person detection.
 [**Source Code**](https://gitlab.com/EAVISE/adversarial-yolo)

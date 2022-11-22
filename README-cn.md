@@ -132,9 +132,10 @@ python train_optim.py -h
 Detlib为检测库，实现基础的检测器以及对检测器统一调用的API方法。
 本框架的模型扰动（例如Shakedrop）在检测模块内部实现。
   * **HHDet** (PyTorch) - Yolo V2, V3, V3-tiny, V4, V4tiny, V5
-    * See **acknowledgements** in README.md in the main project directory.
+    * 在[**Acknowledgements**](#Acknowledgements)查看模型源
+    * 为了适应该攻击库框架(及部分功能实现需要)，我们对源模型实现进行了修改
   * **TorchDet** (PyTorch) - Faster RCNN(renet50), ssd(vgg16) & ssdlite(mobilenet v3 large)
-    * Rewritten from Torch official detection models.
+    * 改写了Pytorch提供的检测模型的部分代码
 
   * **模型自定义** - 您可以基于本框架自定义攻击模型，在**detlib/README.md**中可以查看更多细节介绍。
 
@@ -146,10 +147,14 @@ Attack Lib攻击算法库，负责实现基础攻击方法及一个核心攻击�
       * 基于优化器的攻击方法: **SGD** & **Adam**.
 
 * **Utils**
-  * Config parser, data preprocessing utils
-  * solver - loss fn & schedulers
-  * metrics - mAP 
-  * Plot - TensorBoard utils
+  * **core**
+    * transformer - differentiable data transform augmentation
+    * parser - config parser
+    * convertor - for data formats conversion
+  * **preprocessing** - for label parse and generation
+  * **solver** - loss fn & schedulers
+  * **metrics** - mAP 
+  * **plot** - TensorBoard
   
 对应模块中的README.md文件有关于模块中方法的详细阐述。
 
@@ -172,9 +177,14 @@ Attack Lib攻击算法库，负责实现基础攻击方法及一个核心攻击�
   | [**Paper**](https://arxiv.org/abs/2004.10934)
   | [**Source Code**](https://github.com/AlexeyAB/darknet)
   * Yolo V5 [**PyTorch implementation**](https://github.com/ultralytics/yolov5)
-* **TorchDet**: 采用PyTorch官方库提供的检测模型（部分经改写）
-  * FasterRCNN(resnet50 & mobilenet-v3 large), ssd(vgg16) & ssdlite(mobilenet-v3 large).
-
+* **TorchDet**: PyTorch官方库提供的检测模型
+  * from **PyTorch** Detection Lib [**Docs**](https://pytorch.org/vision/0.10/models.html) | Pytorch [**Paper**](https://arxiv.org/abs/1912.01703)
+  * **FasterRCNN**(resnet50 & mobilenet-v3 large) 
+      [**Paper**](https://arxiv.org/abs/1506.01497)
+  * **SSD** (vgg16)
+      [**Paper**](https://arxiv.org/abs/1512.02325)
+  * **SSDlite** (mobilenet-v3 large)
+      [**Paper**](https://arxiv.org/abs/1905.02244)
 
 ### Attack Lib
 * **Reference**: Fooling automated surveillance cameras: adversarial patches to attack person detection.

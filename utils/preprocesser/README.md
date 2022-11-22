@@ -56,25 +56,25 @@ The format of the generated label files will be like:
 person 0.1345 0.4567 0.2456 0.9876
 ```
 
-where the xyxy coordinates of the bbox is scale into [0, 1].
-
-And you are expected to further rescale labels based on **rescale_labels.py** 
-to meet formatting requirements of mAP.py. The rescaled label file format will be like:
+where the xyxy coordinates of the bbox is scale into `[0, 1]` or a rescaled version as `[0, input_size]`.
+The latter one can meet formatting requirements of mAP.py. The rescaled label file format will be like:
 ```bash
 # cls_name [confidence] x_min y_min x_max y_max
 person [confidence] 137.2 125.0 243.5 589.6
 ```
 
 ### Detection labels
-We have the **gen_det_labels.py** to help generate detection labels with help with our Detection-Attack framework.
+We provide **gen_det_labels.py** to help generate detection labels with help with our Detection-Attack framework.
 ```bash
-python ./preprocesser/gen_det_labels.py \
--dr=preprocesser/coco/train/train2017 \
--sr=preprocesser/coco/train/train2017_labels \
--cfg=coco80.yaml
-
-python ./preprocesser/gen_det_labels.py \
--dr=preprocesser/coco/train/train2017 \
--sr=preprocesser/coco/train/train2017_labels \
--cfg=coco91.yaml
+# Run in the proj root dir:
+python ./utils/preprocesser/gen_det_labels.py \
+-dr=data/INRIAPerson/Test/pos \
+-sr=data/INRIAPerson/Test/labels \
+-cfg=eval/coco80.yaml
+# Replace -cfg with 'eval/coco91.yaml' to generate labels from TorchDet models. 
 ```
+
+python ./utils/preprocesser/gen_det_labels.py \
+-dr=data/INRIAPerson/Test/pos \
+-sr=./labels \
+-cfg=eval/coco80.yaml

@@ -15,6 +15,7 @@ from utils import ConfigParser
 from utils.loader import dataLoader
 from utils.parser import load_class_names
 from utils.det_utils import plot_boxes_cv2
+from utils.parser import logger_msg
 
 class Utils:
     def __init__(self, cfg):
@@ -42,13 +43,15 @@ class Utils:
 
 
 if __name__ == "__main__":
+    import warnings
 
-    source = 'val/val2017'
+    warnings.filterwarnings('ignore')
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('-dr', '--data_root', type=str, default=f"preprocesser/coco_person/{source}/pos", help="Image preprocesser dir path")
-    parser.add_argument('-sr', '--save_root', type=str, default=f'preprocesser/coco_person/{source}/labels/', help="Label preprocesser dir path")
+    parser.add_argument('-dr', '--data_root', type=str, default=f"data/INRIAPerson/Tes/pos", help="Image data dir path")
+    parser.add_argument('-sr', '--save_root', type=str, default=f'data/INRIAPerson/Test/labels', help="Label data dir path")
     parser.add_argument('-cfg', '--config_file', type=str, default=f'test.yaml', help=".yaml config file, a relative path.")
-    parser.add_argument('-nr', '--nrescale', action="store_true", default=False, help="Won't rescale labels from [0, 1] to the target scales If nrescale=True. Default: rescale to the input size.")
+    parser.add_argument('-k', '--keep_scale', action="store_true", default=False, help="To keep value range of labels as [0, 1] if set keep_scale=True. Default: rescale to the input size.")
     parser.add_argument('-i', '--imgs', action='store_true', help="To save imgs.")
     # parser.add_argument('-c', '--class', nargs='+', default=-1)
     args = parser.parse_args()
@@ -61,17 +64,16 @@ if __name__ == "__main__":
 
     utils = Utils(cfg)
     device = torch.device('cuda')
-    # evaluator = UniversalPatchEvaluator(cfg, args, device)
-
     batch_size = 1
-    print('dataroot     :', os.getcwd(), args.data_root)
     img_names = [os.path.join(args.data_root, i) for i in os.listdir(args.data_root)]
-
     data_loader = dataLoader(data_root=args.data_root, input_size=cfg.DETECTOR.INPUT_SIZE,
                              batch_size=batch_size, shuffle=False, num_workers=8, pin_memory=True)
-    postfix = '-labels' if args.nrescale else '-rescale-labels'
-    print('Rescale label: ', not args.nrescale, '; Postfix of saved dir:　', postfix)
+    postfix = '-labels' if args.keep_scale else '-rescale-labels'
+
     save_path = args.save_root
+    logger_msg('Dataroot', args.data_root)
+    logger_msg('Rescale label', not args.keep_scale)
+    logger_msg('Save dir', save_path+'/[detector_name]'+postfix)
     for detector in detectors:
         fp = os.path.join(save_path, detector.name + postfix)
         os.makedirs(fp, exist_ok=True)
@@ -91,4 +93,4 @@ if __name__ == "__main__":
                                savename=os.path.join(save_dir, img_name))
             # os.path.join('./test/' + img_name)
             # print(fp)
-            utils.save_label(preds[0], fp, img_name, save_conf=False, rescale=not args.nrescale)
+            utils.save_label(preds[0], fp, img_name, save_conf=False, rescale=not args.keep_scale)
