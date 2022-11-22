@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 本仓库支持从给定的模型中生成检测标签，在**utils/preprocessor/README.md**查看更多细节介绍。
 我们在[**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
-| [**BaiduCloud**]([**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3))
+| [**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3))
 提供了实验数据，包括基于数据集检测标签及对抗补丁demo。
 
 您可以通过以下命令来下载模型权重：
