@@ -13,7 +13,7 @@ T-SEA官方执行代码仓库, 同时该仓库提供了一个用来制作通用�
 如果本仓库对您的工作有帮助，请帮忙点亮star~ Thanks! :-D
 
 ## 更新
-* 2022.11.21 - 修复已知的运行bugs。
+* 2022.11.21 - 修复已知的训练/测试脚本的运行bug。
 * 2022.11.18 - 创建本仓库。
 
 
@@ -30,6 +30,8 @@ pip install -r requirements.txt
 * 模型: 预训练的检测器模型权重。
 * 数据: 图片数据(必需)、对应的标注标签(可选，测试时选用) & 对应的检测标签(可选，测试时选用）。
 
+
+#### 数据
 ```bash
 # 请将数据放在data/路径下
 # 标签文件所在目录文件树示意如下：
@@ -44,11 +46,13 @@ pip install -r requirements.txt
                 ├── ...
 ```
 
+**下载**
 本仓库支持从给定的模型中生成检测标签，在**utils/preprocessor/README.md**查看更多细节介绍。
 我们在[**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
-| [**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3))
+| [**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3)
 提供了实验数据，包括基于数据集检测标签及对抗补丁demo。
 
+#### 模型
 您可以通过以下命令来下载模型权重：
 ```bash
 # 在项目根目录执行以下命令
@@ -79,7 +83,7 @@ bash ./detlib/weights/setup.sh
 我们提供了 **Mean Average Precision(mAP)** 作为测试量化指标。 
 ```bash
 # 直接运行提供的示例脚本来对抗补丁样例测试
-bash ./scripts/eval.sh
+bash ./scripts/eval.sh 0 # gpu id
 ```
 
 ```bash
@@ -150,6 +154,12 @@ Attack Lib攻击算法库，负责实现基础攻击方法及一个核心攻击�
 对应模块中的README.md文件有关于模块中方法的详细阐述。
 
 ## Acknowledgements
+
+### Data
+* INRIAPerson [Paper](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)
+* COCO-person(from COCO) [HomePage](https://cocodataset.org/#home)
+* CCTV-person [Source](https://www.kaggle.com/datasets/constantinwerner/human-detection-dataset)
+
 ### Detlib
 * **HHDet**
   * Yolo V2 [**PyTorch implementation**](https://github.com/ayooshkathuria/pytorch-yolo2)
