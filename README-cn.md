@@ -28,7 +28,7 @@ pip install -r requirements.txt
 ### 模型 & 数据
 请确保您已经准备好了预训练模型及数据。需要准备的文件主要包括：
 * 模型: 预训练的检测器模型权重。
-* 数据集: 数据、标注标签(可选，测试时选用)及对应的检测标签(可选，测试时选用）。
+* 数据: 图片数据(必需)、对应的标注标签(可选，测试时选用) & 对应的检测标签(可选，测试时选用）。
 
 ```bash
 # 请将数据放在data/路径下
@@ -85,12 +85,13 @@ bash ./scripts/eval.sh
 ```bash
 # 或运行完整命令来进行自定义测试，在项目根目录执行：
 # 测试yolo-models(coco80):
+# 替换$PROJECT_DIR为项目根目录绝对路径
 python evaluate.py \
 -p ./results/v5-demo.png \
 -cfg ./configs/eval/coco80.yaml \
--lp ./data/INRIAPerson/Test/labels \
--dr ./data/INRIAPerson/Test/pos \
--s ./data/test \
+-lp $PROJECT_DIR/data/INRIAPerson/Test/labels \
+-dr $PROJECT_DIR/data/INRIAPerson/Test/pos \
+-s $PROJECT_DIR/data/test \
 -e 0 # 攻击类别id
 # 测试torch-models(coco91): 
 # 以./configs/eval/coco91.yaml作为-cfg参数运行上述命令

@@ -101,7 +101,7 @@ def draw_mAP(args):
          Create a list of all the class names present in the ground-truth (gt_classes).
     """
     # get a list with the ground-truth files
-    # print("ground truth path        :", GT_PATH)
+    print("ground truth path        :", GT_PATH)
     ground_truth_files_list = glob.glob(GT_PATH + '/*.txt')
     if len(ground_truth_files_list) == 0:
         error("Error: No ground-truth files found!")

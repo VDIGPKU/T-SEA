@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from attack.attacker import UniversalAttacker
 from utils.preprocesser.gen_det_labels import Utils
-from utils.parser import ConfigParser, logger_cfg
+from utils.parser import ConfigParser, logger_cfg, ignore_class
 from utils.metrics.main import compute_mAP
 from scripts.dict import MAP_PATHS
 from utils.utils import dir_check, path_remove
@@ -42,26 +42,8 @@ def get_save(args):
         return path.split('.')[0]
     prefix = get_prefix(args.patch)
     args.save = os.path.join(args.save, prefix)
-    if os.path.exists(args.save):
-        shutil.rmtree(args.save)
-    return args
-
-
-def ignore_class(args, cfg):
-    # Be careful of the so-called 'attack_list' and 'eva_class' in the evaluate.py
-    # For higher reusability of the codes, these variable names may be confusing
-    # In this file, the 'attack_list' is loaded from the config file which has been used for training
-    # (cuz we don't bother to create a new config file for evaluations)
-    # Thus the 'attack_list' refers to the original attacked classes when training the patch
-    # while the 'eva_list' denotes the class list to be evaluated, which are to attack in the evaluation
-    # (When the eva classes are different from the original attack classes,
-    # it is mainly for the partial attack in evaluating unseen-class/cross-class performance)
-    args.eva_class_list = cfg.rectify_class_list(args.eva_class, dtype='str')
-    # print('Eva(Attack) classes from evaluation: ', cfg.show_class_index(args.eva_class_list))
-    # print('Eva classes names from evaluation: ', args.eva_class_list)
-
-    args.ignore_class = list(set(cfg.all_class_names).difference(set(args.eva_class_list)))
-    if len(args.ignore_class) == 0: args.ignore_class = None
+    # if os.path.exists(args.save):
+    #     shutil.rmtree(args.save)
     return args
 
 
@@ -121,7 +103,7 @@ def eval_init(args, cfg, device=torch.device("cuda:0" if torch.cuda.is_available
 
 def cfg_save_modify(cfg):
     cfg.DETECTOR.PERTURB.GATE = None
-    cfg.DATA.AUGMENT = ''
+    cfg.DATA.AUGMENT = 0
     return cfg
 
 
@@ -148,7 +130,7 @@ def eval_patch(args, cfg):
         # cmd = 'ln -s ' + os.path.join(args.label_path, detector.name+'-labels') + ' ' + det_path
         source = os.path.join(args.label_path, detector.name + label_postfix)
         cmd = ' '.join(['ln -s ', source, det_path])
-        # print(cmd)
+        print(cmd)
         os.system(cmd)
 
         # (det-results)take clear detection results as GT label: attack results as detections
@@ -187,11 +169,11 @@ if __name__ == '__main__':
     # To test attack performance with reference to detection labels.
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--patch', type=str, default=None, help="Adversarial patch path.")
-    parser.add_argument('-cfg', '--cfg', type=str, default=None, help="A relative file path of teh .yaml cfg file.")
-    parser.add_argument('-s', '--save', type=str, default=os.path.join(PROJECT_DIR, '/data/inria/'), help="Directory to save evaluation results.")
-    parser.add_argument('-lp', '--label_path', type=str, default=os.path.join(PROJECT_DIR, '/INRIAPerson/Test/labels'), help='ground truth & detector predicted labels dir')
-    parser.add_argument('-dr', '--data_root', type=str, default=os.path.join(PROJECT_DIR, '/data/INRIAPerson/Test/pos'))
+    parser.add_argument('-p', '--patch', type=str, default=None, help="Optional. Init by an given patch.")
+    parser.add_argument('-cfg', '--cfg', type=str, default=None, help="A RELATIVE file path of teh .yaml cfg file.")
+    parser.add_argument('-s', '--save', type=str, default=os.path.join(PROJECT_DIR, 'data/inria/'), help="Directory to save evaluation results. ** Use an ABSOLUTE path.")
+    parser.add_argument('-lp', '--label_path', type=str, default=os.path.join(PROJECT_DIR, 'data/INRIAPerson/Test/labels'), help='Directory ground truth & detection labels. ** Use an ABSOLUTE path')
+    parser.add_argument('-dr', '--data_root', type=str, default=os.path.join(PROJECT_DIR, 'data/INRIAPerson/Test/pos'), help='Directory of the target image data to evaluate. ** Use an ABSOLUTE path.')
     parser.add_argument('-to', '--test_origin', action='store_true', help="To test detector performance in clean samples.")
     parser.add_argument('-tg', '--test_gt', action='store_true', help="To test attack performance with reference to ground truth labels(Annotation).")
     parser.add_argument('-ul', '--stimulate_uint8_loss', action='store_true', help="To stimulate uint8 loss from float preprocesser format.")

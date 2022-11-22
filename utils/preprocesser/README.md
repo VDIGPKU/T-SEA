@@ -27,20 +27,32 @@ This is for different standards to compute mAP.
 We provide **coco_process.py**、**inria_process.py** to 
 help process annotations of COCO and INRIAPerson datasets.
 
+A demo for COCO-val2017 dataset:
 ```bash
+# Run in the proj root dir:
 python ./utils/preprocesser/coco_process.py \
---img_folder=./preprocesser/INRIAPerson/Test/pos \
+--img_folder=./data/coco/val/ \
 --name_file=./configs/namefiles/coco-91.names \
 --json_path=./coco/instances_val2017.json \  
---save_path=./coco/val/val2017_labels/ground-truth
+--save_path=./coco/val/val2017_labels/ground-truth \
+--rescale_factor=416 # Decide this based on your input image size
 ```
-Class name files in ./config/namefiles includes coco80.names(for models with 80 prediction classes) and coco-91.names(for PyTorch model with 91 prediction classes).
 
+Another demo for INRIAPerson dataset:
+```bash
+# Run in the proj root dir:
+python ./utils/preprocesser/inria_process.py \
+--annotations_path=./data/INRIAPerson/Test/annotations \
+--save_path=./data/INRIAPerson/Test/labels/ground-truth \
+--rescale_factor=416 # Decide this based on your input image size
+
+# See help of the arguments
+python ./utils/preprocesser/inria_process.py -h
+```
 
 The format of the generated label files will be like:
-```
-cls_name x_min y_min x_max y_max
-
+```bash
+# cls_name x_min y_min x_max y_max
 person 0.1345 0.4567 0.2456 0.9876
 ```
 
@@ -48,12 +60,10 @@ where the xyxy coordinates of the bbox is scale into [0, 1].
 
 And you are expected to further rescale labels based on **rescale_labels.py** 
 to meet formatting requirements of mAP.py. The rescaled label file format will be like:
+```bash
+# cls_name [confidence] x_min y_min x_max y_max
+person [confidence] 137.2 125.0 243.5 589.6
 ```
-cls_name [confidence] x_min y_min x_max y_max
-
-person [confidence] 137 125 243.5 589.6
-```
-
 
 ### Detection labels
 We have the **gen_det_labels.py** to help generate detection labels with help with our Detection-Attack framework.

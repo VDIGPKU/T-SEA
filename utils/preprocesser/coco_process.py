@@ -1,7 +1,7 @@
 import argparse
 import cv2
 import json
-
+import shutil
 import os
 from tqdm import tqdm
 
@@ -32,7 +32,8 @@ class ConvertCOCOToYOLO:
         self.json_path = json_path
         self.save_path = save_path
         self.names = load_class_names(name_file)
-
+        if os.path.exists(save_path):
+            shutil.rmtree(save_path)
         os.makedirs(save_path, exist_ok=True)
 
         self.sep = os.sep
@@ -59,23 +60,13 @@ class ConvertCOCOToYOLO:
         size = self.get_img_shape(img_path)
         xmax, xmin = sorting(x1, x2)
         ymax, ymin = sorting(y1, y2)
-        # dw = 1./ size[1]
-        # dh = 1./ size[0]
-        # x = (xmin + xmax)/2.0
-        # y = (ymin + ymax)/2.0
-        # w = xmax - xmin
-        # h = ymax - ymin
-        # x = x*dw
-        # w = w*dw
-        # y = y*dh
-        # h = h*dh
         xmin /= size[1]
         xmax /= size[1]
         ymin /= size[0]
         ymax /= size[0]
         return (xmin, ymin, xmax, ymax)
 
-    def convert(self, annotation_key='annotations', img_id='image_id', cat_id='category_id', bbox_name='bbox'):
+    def convert(self, annotation_key='annotations', img_id='image_id', cat_id='category_id', bbox_name='bbox', rescale_factor=1):
         # Enter directory to read JSON file
         data = json.load(open(self.json_path))
         
@@ -97,15 +88,10 @@ class ConvertCOCOToYOLO:
             # Convert the preprocesser: bbox [x, y, w, h] to bbox [x1, y1, x2, y2]
             kitti_bbox = [bbox[0], bbox[1], bbox[2] + bbox[0], bbox[3] + bbox[1]]
             yolo_bbox = self.convert_labels(image_path, kitti_bbox[0], kitti_bbox[1], kitti_bbox[2], kitti_bbox[3])
-
+            yolo_bbox *= rescale_factor
 
             # Prepare for export
             label_name = self.names[category_id].replace(' ', '')
-            # img = cv2.imread(image_path)
-            # print(list(yolo_bbox)+[int(category_id)])
-            # plot_boxes_cv2(img, [list(yolo_bbox)+[1.00, int(category_id)]], self.names, savename='/home/chenziyan/work/BaseDetectionAttack/preprocesser/test/'+image_id+'.jpg')
-            # assert 1 == 0, 'breaking'
-
 
             filename = f'{self.save_path}{self.sep}{image_id}.txt'
             content = f"{label_name} {yolo_bbox[0]} {yolo_bbox[1]} {yolo_bbox[2]} {yolo_bbox[3]}\n"
@@ -148,16 +134,13 @@ if __name__ == "__main__":
     target = 'val'
     postfix = '2017'
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--img_folder', type=str, help='image dir',
-                        default=f'./coco/{target}/{target}{postfix}')
-    parser.add_argument('-n', '--name_file', type=str,
-                        help='class name file dir', default=f'../configs/namefiles/coco-stuff.names')
-    parser.add_argument('-j', '--json_path', type=str,
-                        help='coco obj annotation .json file path',
+    parser.add_argument('-i', '--img_folder', type=str, help='image dir', default=f'./coco/{target}/{target}{postfix}')
+    parser.add_argument('-n', '--name_file', type=str, help='class name file dir', default=f'../configs/namefiles/coco80.names')
+    parser.add_argument('-j', '--json_path', type=str, help='coco obj annotation .json file path',
                         default=f'./coco/instances_{target}{postfix}.json')
-    parser.add_argument('-s', '--save_path', type=str, help='label save dir',
-                        default=f'./coco/{target}/{target}{postfix}-labels/ground-truth')
+    parser.add_argument('-s', '--save_path', type=str, help='label save dir', default=f'./coco/{target}/{target}{postfix}-labels/ground-truth')
+    parser.add_argument('-r', '--rescale_factor', type=int, default=416, help="Rescale factor for an input size [41, 416]. Decide this based on your input image size.")
     args = parser.parse_args()
     util = ConvertCOCOToYOLO(args.img_folder, args.json_path, args.save_path, args.name_file)
-    util.convert()
+    util.convert(rescale_factor=args.rescale_factor)
     # util.check_empty_label()

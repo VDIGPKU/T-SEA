@@ -123,6 +123,24 @@ class ConfigParser:
         pass
 
 
+def ignore_class(eva_args, cfg):
+    # Be careful of the so-called 'attack_list' and 'eva_class' in the evaluate.py
+    # For higher reusability of the codes, these variable names may be confusing
+    # In this file, the 'attack_list' is loaded from the config file which has been used for training
+    # (cuz we don't bother to create a new config file for evaluations)
+    # Thus the 'attack_list' refers to the original attacked classes when training the patch
+    # while the 'eva_list' denotes the class list to be evaluated, which are to attack in the evaluation
+    # (When the eva classes are different from the original attack classes,
+    # it is mainly for the partial attack in evaluating unseen-class/cross-class performance)
+    eva_args.eva_class_list = cfg.rectify_class_list(eva_args.eva_class, dtype='str')
+    # print('Eva(Attack) classes from evaluation: ', cfg.show_class_index(args.eva_class_list))
+    # print('Eva classes names from evaluation: ', args.eva_class_list)
+
+    eva_args.ignore_class = list(set(cfg.all_class_names).difference(set(eva_args.eva_class_list)))
+    if len(eva_args.ignore_class) == 0: eva_args.ignore_class = None
+    return eva_args
+
+
 def logger_msg(k, v):
     print('{:>30} : {:<30}'.format(str(k), str(v)))
 

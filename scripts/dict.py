@@ -37,8 +37,9 @@ def get_attack_method(attack_method: str):
         return attack_method_dict['optim']
     return attack_method_dict[attack_method]
 
+
 MAP_PATHS = {'attack-img': 'imgs',
-         'det-lab': 'det-labels',
-         'attack-lab': 'attack-labels',
-         'det-res': 'det-res',
-         'ground-truth': 'ground-truth'}
+             'det-lab': 'det-labels',
+             'attack-lab': 'attack-labels',
+             'det-res': 'det-res',
+             'ground-truth': 'ground-truth'}
