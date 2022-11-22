@@ -13,7 +13,7 @@ T-SEA官方执行代码仓库, 同时该仓库提供了一个用来制作通用�
 如果本仓库对您的工作有帮助，请帮忙点亮star~ Thanks! :-D
 
 ## 更新
-* 2022.11.21 - 修复已知的训练/测试脚本的运行bug。
+* 2022.11.22 - 修复已知的训练/测试脚本的运行bug。
 * 2022.11.18 - 创建本仓库。
 
 
@@ -156,9 +156,9 @@ Attack Lib攻击算法库，负责实现基础攻击方法及一个核心攻击�
 ## Acknowledgements
 
 ### Data
-* INRIAPerson [Paper](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)
-* COCO-person(from COCO) [HomePage](https://cocodataset.org/#home)
-* CCTV-person [Source](https://www.kaggle.com/datasets/constantinwerner/human-detection-dataset)
+* **INRIAPerson** [**Paper**](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)
+* **COCO-person** [**HomePage**](https://cocodataset.org/#home)
+* **CCTV-person** [**Source**](https://www.kaggle.com/datasets/constantinwerner/human-detection-dataset)
 
 ### Detlib
 * **HHDet**
@@ -188,4 +188,4 @@ Attack Lib攻击算法库，负责实现基础攻击方法及一个核心攻击�
   * Tensorboard.
 
 ## 联系我们
-如果您对本工作有疑问，欢迎通过邮件`huanghao@stu.pku.edu.cn`联系我们.
+如果您对本工作有疑问，欢迎通过邮件`huanghao@stu.pku.edu.cn`联系我们。

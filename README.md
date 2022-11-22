@@ -15,7 +15,7 @@ An official implementation of T-SEA, and also a framework provided to achieve un
 If T-SEA is helpful for your work, please help star this repo~ Thanks! :-D
 
 ## Update
-* 2022.11.21 - Fix bugs for running train & eval scripts.
+* 2022.11.22 - Fix bugs for running train & eval scripts.
 * 2022.11.18 - This repo is created.
 
 
@@ -162,7 +162,7 @@ See more details in the README.md file in the corresponding modules.
 
 ## Acknowledgements
 
-**Data Source**
+### Data
 * **INRIAPerson** [**Paper**](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)
 * **COCO-person** [**HomePage**](https://cocodataset.org/#home)
 * **CCTV-person** [**Source**](https://www.kaggle.com/datasets/constantinwerner/human-detection-dataset)
