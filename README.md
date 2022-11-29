@@ -5,7 +5,9 @@
 
 
 [**Paper**](https://arxiv.org/abs/2211.09773)
-| Hao Huang, Ziyan Chen, Huanran Chen, Yongtao Wang, Kevin Zhang
+| Hao Huang*, Ziyan Chen*, Huanran Chen*, Yongtao Wang, Kevin Zhang
+
+(*Equal contribution)
 
 An official implementation of T-SEA, and also a framework provided to achieve universal (cross model&instance) patch-based adversarial attack.
 
@@ -15,8 +17,8 @@ An official implementation of T-SEA, and also a framework provided to achieve un
 If T-SEA is helpful for your work, please help star this repo~ Thanks! :-D
 
 ## Update
-* 2022.11.22 - Fix bugs for running train & eval scripts.
-* 2022.11.18 - This repo is created.
+* 2022.11.22 - v1.1 Fix bugs for running train & eval scripts.
+* 2022.11.18 - v1.0 This repo is created.
 
 
 ## Install

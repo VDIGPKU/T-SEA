@@ -3,5 +3,6 @@ data/
 checkpoints/
 .idea
 *.weights
+*.pt
 *.avi
 *.log
