@@ -49,9 +49,9 @@ See more details in [Docs](https://github.com/VDIGPKU/T-SEA/blob/main/readme/dat
 
 **Patch Zoo** - See more results in [here](https://drive.google.com/drive/folders/1bGDf5fHVxajexKZUk22OMc5wag_adH-e?usp=share_link).
 
-| Faster RCNN               | SSD                               | YoloV5                   |
-|---------------------------|----------------------------------|--------------------------|
-| ![](results/faster_rcnn-combine-demo.png) | ![](results/ssd-combine-demo.png) | ![](results/v5-demo.png) |
+| Faster RCNN               | SSD                               | Yolo V5                   | Yolo V3  |CenterNet |
+|---------------------------|----------------------------------|--------------------------|:------------:| ----|
+| ![](results/faster_rcnn-combine-demo.png) | ![](results/ssd-combine-demo.png) | ![](results/v5-demo.png) | ![](results/v3-combine.png) |![](results/centernet-combine.png) |
 
 #### Evaluation
 
