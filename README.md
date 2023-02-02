@@ -28,9 +28,6 @@ If T-SEA is helpful for your work, please help star this repo~ Thanks! :-D
 ```bash
 conda create -n tsea python=3.7
 conda activate tsea
-
-# Dependencies
-# Install pytorch>=1.9.0 and torchvision according to PyTorch Docs: https://pytorch.org/get-started/previous-versions/.
 pip install -r requirements.txt
 ```
 
