@@ -14,6 +14,7 @@ DETECTOR:
   CONF_THRESH: 0.5
   IOU_THRESH: 0.45
 
+  # yolov2: no residual blocks
   PERTURB:
     GATE: null
 

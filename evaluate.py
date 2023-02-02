@@ -72,13 +72,13 @@ def generate_labels(evaluator, cfg, args, save_label=False):
             if save_label:
                 # for saving the original detection info
                 fp = os.path.join(tmp_path, MAP_PATHS['det-lab'])
-                utils.save_label(all_preds[0], fp, img_name, save_conf=False, rescale=True)
+                utils.save_label((all_preds[0]).clone(), fp, img_name, save_conf=False, rescale=True)
 
             if hasattr(args, 'test_origin') and args.test_origin:
                 fp = os.path.join(tmp_path, MAP_PATHS['det-res'])
-                utils.save_label(all_preds[0], fp, img_name, save_conf=True, rescale=True)
+                utils.save_label((all_preds[0]).clone(), fp, img_name, save_conf=True, rescale=True)
 
-            target_nums_clean = evaluator.get_patch_pos_batch(all_preds)[0]
+            # target_nums_clean = evaluator.get_patch_pos_batch(all_preds)[0]
             adv_img_tensor = evaluator.uap_apply(img_tensor_batch)
 
             preds = detector(adv_img_tensor)['bbox_array']
@@ -133,39 +133,52 @@ def eval_patch(args, cfg):
         print(cmd)
         os.system(cmd)
 
-        # (det-results)take clear detection results as GT label: attack results as detections
+        # (det-results)Test attack performance with detections as GT.
+        # GT label: detections on clean samples.
+        # Target detection: detections on adversarial samples.
         # print('ground truth     :', os.path.join(path, MAP_PATHS['det-lab']))
         det_mAP = compute_mAP(path=path, ignore=args.ignore_class, lab_path=MAP_PATHS['attack-lab'],
                                 gt_path=MAP_PATHS['det-lab'], res_prefix='det', quiet=quiet)
         det_mAPs[detector.name] = round(det_mAP*100, 2)
-        # shutil.rmtree(os.path.join(path, MAP_PATHS['attack-lab']))
 
-        if hasattr(args, 'test_gt') and args.test_gt:
-            # link the path of the GT labels
+        if hasattr(args, 'test_gt') or hasattr(args, 'test_origin'):
+            # soft link the path of the GT labels
             gt_target = os.path.join(path, 'ground-truth')
             gt_source = os.path.join(args.label_path, MAP_PATHS['ground-truth'] + label_postfix)
             path_remove(gt_target)
             cmd = ' '.join(['ln -s ', gt_source, gt_target])
             print(cmd)
             os.system(cmd)
-            # (gt-results)take original labels as GT label(default): attack results as detections
-            # print('ground truth     :', MAP_PATHS['ground-truth'])
-            gt_mAP = compute_mAP(path=path, ignore=args.ignore_class, lab_path=MAP_PATHS['attack-lab'],
-                                    gt_path=MAP_PATHS['ground-truth'], res_prefix='gt', quiet=quiet)
-            gt_mAPs[detector.name] = round(gt_mAP*100, 2)
 
-        if hasattr(args, 'test_origin') and args.test_origin:
-            rp = 'ori'
-            # (ori-results)take original labels as path['ground-truth'] label(default): clear detection res as detections
-            ori_mAP = compute_mAP(path=path, ignore=args.ignore_class, lab_path=MAP_PATHS['det-res'],
-                                gt_path=MAP_PATHS['ground-truth'], res_prefix=rp, quiet=quiet)
-            ori_mAPs[rp][detector.name] = round(ori_mAP*100, 2)
+            if args.test_gt:
+                # (gt-results) Test attack performance with annotations as GT.
+                # GT label: annotations.
+                # Target detection: detections on adversarial samples.
+                gt_mAP = compute_mAP(path=path, ignore=args.ignore_class, lab_path=MAP_PATHS['attack-lab'],
+                                        gt_path=MAP_PATHS['ground-truth'], res_prefix='gt', quiet=quiet)
+                gt_mAPs[detector.name] = round(gt_mAP*100, 2)
+
+            if args.test_origin:
+                # (ori-results) Test original performance of the detector.
+                # GT label: annotations.
+                # Target detection: detections on clean samples.
+                ori_mAP = compute_mAP(path=path, ignore=args.ignore_class, lab_path=MAP_PATHS['det-res'],
+                                      gt_path=MAP_PATHS['ground-truth'], res_prefix='ori', quiet=quiet)
+                ori_mAPs[detector.name] = round(ori_mAP * 100, 2)
 
     return det_mAPs, gt_mAPs, ori_mAPs
 
 
+def save_results(results, results_file):
+    if not os.path.exists(results_file):
+        # write the header if the det_mAP_file is firstly created.
+        with open(results_file, 'a') as f:
+            f.write(logger_msg('model name', 'mAP'))
+            f.write('--------------------------\n')
+    dict2txt(results, results_file)
+
 if __name__ == '__main__':
-    from utils.parser import dict2txt, merge_dict_by_key
+    from utils.parser import dict2txt, logger_msg
     # To test attack performance with reference to detection labels.
 
     parser = argparse.ArgumentParser()
@@ -174,30 +187,32 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--save', type=str, default=os.path.join(PROJECT_DIR, 'data/inria/'), help="Directory to save evaluation results. ** Use an ABSOLUTE path.")
     parser.add_argument('-lp', '--label_path', type=str, default=os.path.join(PROJECT_DIR, 'data/INRIAPerson/Test/labels'), help='Directory ground truth & detection labels. ** Use an ABSOLUTE path')
     parser.add_argument('-dr', '--data_root', type=str, default=os.path.join(PROJECT_DIR, 'data/INRIAPerson/Test/pos'), help='Directory of the target image data to evaluate. ** Use an ABSOLUTE path.')
-    parser.add_argument('-to', '--test_origin', action='store_true', help="To test detector performance in clean samples.")
-    parser.add_argument('-tg', '--test_gt', action='store_true', help="To test attack performance with reference to ground truth labels(Annotation).")
-    parser.add_argument('-ul', '--stimulate_uint8_loss', action='store_true', help="To stimulate uint8 loss from float preprocesser format.")
+    parser.add_argument('-to', '--test_origin', action='store_true', help="Test performance of the detectors in clean samples.")
+    parser.add_argument('-tg', '--test_gt', action='store_true', help="Test attack performance based on ground truth labels(Annotation).")
+    parser.add_argument('-ul', '--stimulate_uint8_loss', action='store_true', help="Stimulate uint8 loss from float preprocesser format.")
     parser.add_argument('-i', '--save_imgs', help='to save attacked imgs', action='store_true')
     parser.add_argument('-ng', '--gen_no_label', action='store_true', help="Won't generate any detection labels of adversarial samples if set True.")
     parser.add_argument('-e', '--eva_class', type=str, default='0', help="The class to attack. '-1': all classes, '-2': attack seen classes(ATTACK_CLASS in cfg file), '-3': attack unseen classes(all_class - ATTACK_CLASS); or custom '0, 2:5, 10'.")
-    parser.add_argument('-q', '--quiet', action='store_true', help='logger none if set true')
+    parser.add_argument('-q', '--quiet', action='store_true', help='Verbose none if set true.')
     args = parser.parse_args()
+
+    args.save = os.path.abspath(args.save)
+    args.label_path = os.path.abspath(args.label_path)
+    args.data_root = os.path.abspath(args.data_root)
 
     cfg = ConfigParser(args.cfg)
     args = get_save(args)
     # args, evaluator = eval_init(args, cfg)
     det_mAPs, gt_mAPs, ori_mAPs = eval_patch(args, cfg)
 
-    det_mAP_file = os.path.join(args.save, 'det-mAP.txt')
-    if not os.path.exists(det_mAP_file):
-        with open(det_mAP_file, 'a') as f:
-            f.write('              scale : ' + str(cfg.ATTACKER.PATCH.SCALE) + '\n')
-            f.write('--------------------------\n')
+    # save mAP results to .txt results file.
+    save_results(det_mAPs, os.path.join(args.save, 'det-mAP.txt'))
+    if args.test_gt:
+        save_results(gt_mAPs, os.path.join(args.save, 'gt-mAP.txt'))
+    if args.test_origin:
+        dict2txt(ori_mAPs, os.path.join(args.save, 'ori-mAP.txt'))
 
-    det_dict = det_mAPs
-    dict2txt(det_dict, det_mAP_file)
-    dict2txt(gt_mAPs, os.path.join(args.save, 'gt-mAP.txt'))
     if not args.quiet:
-        print("det dict      mAP :", det_dict)
-        print("See results in path ", args.save)
+        logger_msg("Attack Performance. AP", det_mAPs)
+        logger_msg("See results in path", args.save)
 

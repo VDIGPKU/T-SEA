@@ -14,7 +14,7 @@ class ImgAug(object):
         self.augmentations = augmentations
 
     def __call__(self, data):
-        # Unpack preprocesser
+        # Unpack data
         img, boxes = data
 
         # Convert xywh to xyxy

@@ -130,7 +130,7 @@ class Model(nn.Module):
         return self._forward_once(x, profile, visualize)  # single-scale inference, train
 
     def _forward_augment(self, x):
-        img_size = x.shape[-2:]  
+        img_size = x.shape[-2:]  # height, width
         s = [1, 0.83, 0.67]  # scales
         f = [None, 3, None]  # flips (2-ud, 3-lr)
         y = []  # outputs
@@ -252,10 +252,10 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
 
     layers, save, c2 = [], [], ch[-1]  # layers, savelist, ch out
     for i, (f, n, m, args) in enumerate(d['backbone'] + d['head']):  # from, number, module, args
-        m = eval(m) if isinstance(m, str) else m  # preprocesser strings
+        m = eval(m) if isinstance(m, str) else m  # eval strings
         for j, a in enumerate(args):
             try:
-                args[j] = eval(a) if isinstance(a, str) else a  # preprocesser strings
+                args[j] = eval(a) if isinstance(a, str) else a  # eval strings
             except NameError:
                 pass
 
@@ -289,7 +289,7 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
         t = str(m)[8:-2].replace('__main__.', '')  # module type
         np = sum(x.numel() for x in m_.parameters())  # number params
         m_.i, m_.f, m_.type, m_.np = i, f, t, np  # attach index, 'from' index, type, number params
-        # verbose
+        # v5 arch verbose
         # LOGGER.info(f'{i:>3}{str(f):>18}{n_:>3}{np:10.0f}  {t:<40}{str(args):<30}')  # print model configs
         save.extend(x % i for x in ([f] if isinstance(f, int) else f) if x != -1)  # append to savelist
         layers.append(m_)

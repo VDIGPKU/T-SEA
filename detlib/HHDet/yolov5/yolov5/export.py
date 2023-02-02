@@ -363,7 +363,7 @@ def export_tflite(keras_model, im, file, int8, data, nms, agnostic_nms, prefix=c
         converter.optimizations = [tf.lite.Optimize.DEFAULT]
         if int8:
             from models.tf import representative_dataset_gen
-            dataset = LoadImages(check_dataset(data)['train'], img_size=imgsz, auto=False)  # representative preprocesser
+            dataset = LoadImages(check_dataset(data)['train'], img_size=imgsz, auto=False)  # representative data
             converter.representative_dataset = lambda: representative_dataset_gen(dataset, ncalib=100)
             converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
             converter.target_spec.supported_types = []
@@ -449,7 +449,7 @@ def export_tfjs(file, prefix=colorstr('TensorFlow.js:')):
 
 @torch.no_grad()
 def run(
-        data=ROOT / 'preprocesser/coco128.yaml',  # 'dataset.yaml path'
+        data=ROOT / 'data/coco128.yaml',  # 'dataset.yaml path'
         weights=ROOT / 'yolov5s.pt',  # weights path
         imgsz=(640, 640),  # image (height, width)
         batch_size=1,  # batch size
@@ -566,7 +566,7 @@ def run(
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--preprocesser', type=str, default=ROOT / 'preprocesser/coco128.yaml', help='dataset.yaml path')
+    parser.add_argument('--data', type=str, default=ROOT / 'data/coco128.yaml', help='dataset.yaml path')
     parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov5s.pt', help='model.pt path(s)')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640, 640], help='image (h, w)')
     parser.add_argument('--batch-size', type=int, default=1, help='batch size')

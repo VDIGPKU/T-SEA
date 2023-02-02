@@ -134,7 +134,7 @@ if __name__ == '__main__':
     from utils.general import cv2
 
     imgs = [
-        'preprocesser/images/zidane.jpg',  # filename
+        'data/images/zidane.jpg',  # filename
         Path('data/images/zidane.jpg'),  # Path
         'https://ultralytics.com/images/zidane.jpg',  # URI
         cv2.imread('data/images/bus.jpg')[:, :, ::-1],  # OpenCV

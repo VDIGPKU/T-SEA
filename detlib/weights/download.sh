@@ -17,4 +17,7 @@ wget https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5s.pt
 wget https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5n.pt
 wget https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5m.pt
 
+# centernet: https://github.com/xingyizhou/CenterNet/blob/master/readme/MODEL_ZOO.md
+# ctdet_coco_resdcn18.pth: https://drive.google.com/file/d/1RtFps3kQAyLjQyzCao7pPDclOBQ64Vyp
+
 # Torch Models will be automatically downloaded when first loaded.

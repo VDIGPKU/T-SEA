@@ -139,7 +139,7 @@ class FasterRCNN(GeneralizedRCNN):
         >>>                    num_classes=2,
         >>>                    rpn_anchor_generator=anchor_generator,
         >>>                    box_roi_pool=roi_pooler)
-        >>> model.preprocesser()
+        >>> model.eval()
         >>> x = [torch.rand(3, 300, 400), torch.rand(3, 500, 400)]
         >>> predictions = model(x)
     """
@@ -348,7 +348,7 @@ def fasterrcnn_resnet50_fpn(pretrained=False, progress=True,
         >>>     targets.append(d)
         >>> output = model(images, targets)
         >>> # For inference
-        >>> model.preprocesser()
+        >>> model.eval()
         >>> x = [torch.rand(3, 300, 400), torch.rand(3, 500, 400)]
         >>> predictions = model(x)
         >>>
@@ -411,7 +411,7 @@ def fasterrcnn_mobilenet_v3_large_320_fpn(pretrained=False, progress=True, num_c
     Example::
 
         >>> model = torchvision.models.detection.fasterrcnn_mobilenet_v3_large_320_fpn(pretrained=True)
-        >>> model.preprocesser()
+        >>> model.eval()
         >>> x = [torch.rand(3, 300, 400), torch.rand(3, 500, 400)]
         >>> predictions = model(x)
 
@@ -447,7 +447,7 @@ def fasterrcnn_mobilenet_v3_large_fpn(pretrained=False, progress=True, num_class
     Example::
 
         >>> model = torchvision.models.detection.fasterrcnn_mobilenet_v3_large_fpn(pretrained=True)
-        >>> model.preprocesser()
+        >>> model.eval()
         >>> x = [torch.rand(3, 300, 400), torch.rand(3, 500, 400)]
         >>> predictions = model(x)
 

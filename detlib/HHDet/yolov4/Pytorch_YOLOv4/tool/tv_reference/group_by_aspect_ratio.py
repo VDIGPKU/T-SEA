@@ -38,7 +38,7 @@ class GroupedBatchSampler(BatchSampler):
         if not isinstance(sampler, Sampler):
             raise ValueError(
                 "sampler should be an instance of "
-                "torch.utils.preprocesser.Sampler, but got sampler={}".format(sampler)
+                "torch.utils.data.Sampler, but got sampler={}".format(sampler)
             )
         self.sampler = sampler
         self.group_ids = group_ids
@@ -144,7 +144,7 @@ def _compute_aspect_ratios_voc_dataset(dataset, indices=None):
         indices = range(len(dataset))
     aspect_ratios = []
     for i in indices:
-        # this doesn't load the preprocesser into memory, because PIL loads it lazily
+        # this doesn't load the data into memory, because PIL loads it lazily
         width, height = Image.open(dataset.images[i]).size
         aspect_ratio = float(width) / float(height)
         aspect_ratios.append(aspect_ratio)

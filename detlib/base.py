@@ -2,6 +2,9 @@ import copy
 from abc import ABC, abstractmethod
 import torch
 
+import sys, os
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(PROJECT_DIR)
 
 class DetectorBase(ABC):
     def __init__(self, name: str, cfg, input_tensor_size: int, device: torch.device):
@@ -59,7 +62,7 @@ class DetectorBase(ABC):
 
     def eval(self):
         """
-        This is for model preprocesser setting: fix the model and boost computing.
+        This is for model eval setting: fix the model and boost computing.
         """
         assert self.detector
         self.detector.eval()
@@ -87,6 +90,22 @@ class DetectorBase(ABC):
         assert self.detector
         self.detector.zero_grad()
 
+    def gradient_opt(self):
+        assert self.cfg.PERTURB.GATE == 'grad_descend'
+        self.train()
+        self.ori_model = copy.deepcopy(self.detector)
+        self.optimizer = torch.optim.SGD(self.detector.parameters(), lr=1e-5, momentum=0.9, nesterov=True)
+        self.optimizer.zero_grad()
+
+    def reset_model(self):
+        assert self.cfg.PERTURB.GATE == 'grad_descend'
+        self.detector = copy.deepcopy(self.ori_model)
+
+    def perturb(self):
+        assert self.cfg.PERTURB.GATE == 'grad_descend'
+        self.optimizer.step()
+        self.optimizer.zero_grad()
+
     def int8_precision_loss(self, img_tensor: torch.tensor):
         """
         (to stimulate the precision loss by dtype convertion in physical world)
@@ -102,6 +121,10 @@ class DetectorBase(ABC):
         img_tensor /= 255.
         # img_tensor = self.normalize_tensor(img_tensor)
         return img_tensor
+
+    def nms(self, all_bboxes):
+        from utils import inter_nms
+        return inter_nms(all_bboxes, conf_thres=self.conf_thres, iou_thres=self.iou_thres)
 
     # def __call__(self, batch_tensor, **kwargs):
     #     original_size = (batch_tensor.size(3), batch_tensor.size(4))

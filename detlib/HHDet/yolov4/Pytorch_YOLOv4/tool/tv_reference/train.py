@@ -63,12 +63,12 @@ def main(args):
     device = torch.device(args.device)
 
     # Data loading code
-    print("Loading preprocesser")
+    print("Loading data")
 
     dataset, num_classes = get_dataset(args.dataset, "train", get_transform(train=True), args.data_path)
     dataset_test, _ = get_dataset(args.dataset, "val", get_transform(train=False), args.data_path)
 
-    print("Creating preprocesser loaders")
+    print("Creating data loaders")
     if args.distributed:
         train_sampler = torch.utils.data.distributed.DistributedSampler(dataset)
         test_sampler = torch.utils.data.distributed.DistributedSampler(dataset_test)
@@ -149,7 +149,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=__doc__)
 
-    parser.add_argument('--preprocesser-path', default='/datasets01/COCO/022719/', help='dataset')
+    parser.add_argument('--data-path', default='/datasets01/COCO/022719/', help='dataset')
     parser.add_argument('--dataset', default='coco', help='dataset')
     parser.add_argument('--model', default='maskrcnn_resnet50_fpn', help='model')
     parser.add_argument('--device', default='cuda', help='device')
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     parser.add_argument('--epochs', default=26, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
-                        help='number of preprocesser loading workers (default: 4)')
+                        help='number of data loading workers (default: 4)')
     parser.add_argument('--lr', default=0.02, type=float,
                         help='initial learning rate, 0.02 is the default value for training '
                         'on 8 gpus and 2 images_per_gpu')

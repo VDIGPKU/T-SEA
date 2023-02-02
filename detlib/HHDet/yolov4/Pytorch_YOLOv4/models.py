@@ -24,10 +24,10 @@ class Upsample(nn.Module):
 
         if inference:
 
-            #B = x.preprocesser.size(0)
-            #C = x.preprocesser.size(1)
-            #H = x.preprocesser.size(2)
-            #W = x.preprocesser.size(3)
+            #B = x.data.size(0)
+            #C = x.data.size(1)
+            #H = x.data.size(2)
+            #W = x.data.size(3)
 
             return x.view(x.size(0), x.size(1), x.size(2), 1, x.size(3), 1).\
                     expand(x.size(0), x.size(1), x.size(2), target_size[2] // x.size(2), x.size(3), target_size[3] // x.size(3)).\
@@ -500,9 +500,9 @@ if __name__ == "__main__":
 
     if namesfile == None:
         if n_classes == 20:
-            namesfile = 'preprocesser/voc.names'
+            namesfile = 'data/voc.names'
         elif n_classes == 80:
-            namesfile = 'preprocesser/coco.names'
+            namesfile = 'data/coco.names'
         else:
             print("please give namefile")
 

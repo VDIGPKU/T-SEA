@@ -5,9 +5,31 @@ unified calls like detections format parser.
 
 We currently support detection models as:
 * **HHDet**(PyTorch): Yolo V2, V3, V3-tiny, V4, V4tiny, V5
-  * See **acknowledgements** in README.md in the main project directory.
+
+| Model                                        |                                      PyTorch implementation                                       |                                  Source                                   |                                            
+|----------------------------------------------|:-------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
+| [YoloV2](https://arxiv.org/abs/1506.02640)   |                 [pytorch-yolo2](https://github.com/ayooshkathuria/pytorch-yolo2)                  |                [Page](https://pjreddie.com/darknet/yolo/)                 |
+| [YoloV3](https://arxiv.org/abs/1804.02767v1) |                [PyTorch-YOLOv3](https://github.com/eriklindernoren/PyTorch-YOLOv3)                |                [Page](https://pjreddie.com/darknet/yolo/)                 |
+| [YoloV4](https://arxiv.org/abs/2004.10934)   |                  [pytorch-YOLOv4](https://github.com/Tianxiaomo/pytorch-YOLOv4)                   | [Source Code](https://github.com/AlexeyAB/darknet) |
+| YooV5                                        | [yolov5](https://github.com/ultralytics/yolov5) |                   [Docs](https://docs.ultralytics.com/)                   |
+
 * **TorchDet**(PyTorch): Faster RCNN(renet50), ssd(vgg16) & ssdlite(mobilenet v3 large)
-  * Rewritten from Torch official detection models.
+
+|                      Model                       |                                        
+|:------------------------------------------------:|
+|  [FasterRCNN](https://arxiv.org/abs/1506.01497)  |
+|     [SSD](https://arxiv.org/abs/1512.02325)      |
+|   [SSDLite](https://arxiv.org/abs/1905.02244)    |
+
+PyTorch Detection Lib - [**Docs**](https://pytorch.org/vision/0.10/models.html) | [**Paper**](https://arxiv.org/abs/1912.01703)
+
+
+* **AfreeDet**: Anchor-free detectors.
+
+| Model                                          |                      Source                      |                                 
+|------------------------------------------------|:------------------------------------------------:|
+| [CenterNet](http://arxiv.org/abs/1904.07850)   | [Code](https://github.com/xingyizhou/CenterNet)  |
+
 
 Model perturbation(e.g. Shakedrop) function is achieved and implemented inside detector module.
 
@@ -88,3 +110,54 @@ class HHYolov3(DetectorBase):
         self.detector.module_list.requires_grad_(state)
 ```
 
+#### ShakeDrop
+
+![](../readme/ShakeDrop.png)
+
+```python
+class ShakeDrop(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, x, p_drop=0.5, alpha_range=[0, 2]):
+        gate = torch.cuda.FloatTensor([0]).bernoulli_(1 - p_drop)
+        ctx.save_for_backward(gate)
+        if gate.item() == 0:
+            alpha = torch.cuda.FloatTensor(x.size(0)).uniform_(*alpha_range)
+            alpha = alpha.view(alpha.size(0), 1, 1, 1).expand_as(x)
+            return alpha * x
+        else:
+            return x
+
+    @staticmethod
+    def backward(ctx, grad_output, beta_range=[0, 2]):
+        gate = ctx.saved_tensors[0]
+        if gate.item() == 0:
+            beta = torch.cuda.FloatTensor(grad_output.size(0)).uniform_(*beta_range)
+            beta = beta.view(beta.size(0), 1, 1, 1).expand_as(grad_output)
+            beta = Variable(beta)
+            return beta * grad_output, None, None, None
+        else:
+            return grad_output, None, None, None
+```
+
+If you wanna use ShakeDrop perturbation to improve attack, 
+you may apply the ShakeDrop function to the output of the residual block.
+
+Take the `BasicBlock` of the centernet as an example.
+```python
+class BasicBlock_ShakeDrop(BasicBlock):
+    def __init__(self, inplanes, planes, stride=1):
+        super(BasicBlock_ShakeDrop, self).__init__(inplanes, planes, stride)
+
+    def forward(self, x):
+        residual = x
+    
+        out = self.conv1(x)
+        ...
+        out = self.bn2(out)
+    
+        # print(out.shape)
+        out = ShakeDrop.apply(out) + residual
+        return self.relu(out)
+```
+
+More modification details can be found in [resnet_dcn.py](https://github.com/VDIGPKU/T-SEA/blob/main/detlib/AfreeDet/CenterNet/CenterNet/src/lib/models/networks/resnet_dcn.py).

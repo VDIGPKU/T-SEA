@@ -50,7 +50,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-dr', '--data_root', type=str, default=f"data/INRIAPerson/Tes/pos", help="Image data dir path")
     parser.add_argument('-sr', '--save_root', type=str, default=f'data/INRIAPerson/Test/labels', help="Label data dir path")
-    parser.add_argument('-cfg', '--config_file', type=str, default=f'test.yaml', help=".yaml config file, a relative path.")
+    parser.add_argument('-cfg', '--config_file', type=str, default=f'advpatch/v5.yaml', help=".yaml config file, a relative path.")
     parser.add_argument('-k', '--keep_scale', action="store_true", default=False, help="To keep value range of labels as [0, 1] if set keep_scale=True. Default: rescale to the input size.")
     parser.add_argument('-i', '--imgs', action='store_true', help="To save imgs.")
     # parser.add_argument('-c', '--class', nargs='+', default=-1)
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     save_path = args.save_root
     logger_msg('Dataroot', args.data_root)
     logger_msg('Rescale label', not args.keep_scale)
-    logger_msg('Save dir', save_path+'/[detector_name]'+postfix)
+    logger_msg('Save dir', save_path)
     for detector in detectors:
         fp = os.path.join(save_path, detector.name + postfix)
         os.makedirs(fp, exist_ok=True)

@@ -161,10 +161,10 @@ def _create_validation_data_loader(img_path, batch_size, img_size, n_cpu):
 
 def run():
     print_environment_info()
-    parser = argparse.ArgumentParser(description="Evaluate validation preprocesser.")
+    parser = argparse.ArgumentParser(description="Evaluate validation data.")
     parser.add_argument("-m", "--model", type=str, default="config/yolov3.cfg", help="Path to model definition file (.cfg)")
     parser.add_argument("-w", "--weights", type=str, default="weights/yolov3.weights", help="Path to weights or checkpoint file (.weights or .pth)")
-    parser.add_argument("-d", "--preprocesser", type=str, default="config/coco.preprocesser", help="Path to preprocesser config file (.preprocesser)")
+    parser.add_argument("-d", "--data", type=str, default="config/coco.data", help="Path to data config file (.data)")
     parser.add_argument("-b", "--batch_size", type=int, default=8, help="Size of each image batch")
     parser.add_argument("-v", "--verbose", action='store_true', help="Makes the validation more verbose")
     parser.add_argument("--img_size", type=int, default=416, help="Size of each image dimension for yolo")
@@ -175,7 +175,7 @@ def run():
     args = parser.parse_args()
     print(f"Command line arguments: {args}")
 
-    # Load configuration from preprocesser file
+    # Load configuration from data file
     data_config = parse_data_config(args.data)
     # Path to file containing all images for validation
     valid_path = data_config["valid"]

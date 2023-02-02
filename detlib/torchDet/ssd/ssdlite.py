@@ -35,7 +35,7 @@ def ssdlite320_mobilenet_v3_large(pretrained: bool = False, progress: bool = Tru
     Example:
 
         >>> model = torchvision.models.detection.ssdlite320_mobilenet_v3_large(pretrained=True)
-        >>> model.preprocesser()
+        >>> model.eval()
         >>> x = [torch.rand(3, 320, 320), torch.rand(3, 500, 400)]
         >>> predictions = model(x)
 
@@ -78,7 +78,7 @@ def ssdlite320_mobilenet_v3_large(pretrained: bool = False, progress: bool = Tru
         "detections_per_img": 300,
         "topk_candidates": 300,
         # Rescale the input in a way compatible to the backbone:
-        # The following mean/std rescale the preprocesser from [0, 1] to [-1, -1]
+        # The following mean/std rescale the data from [0, 1] to [-1, -1]
         "image_mean": [0.5, 0.5, 0.5],
         "image_std": [0.5, 0.5, 0.5],
     }
@@ -145,7 +145,7 @@ def ssdlite320_mobilenet_v3_large_shakedrop(
         "detections_per_img": 300,
         "topk_candidates": 300,
         # Rescale the input in a way compatible to the backbone:
-        # The following mean/std rescale the preprocesser from [0, 1] to [-1, 1]
+        # The following mean/std rescale the data from [0, 1] to [-1, 1]
         "image_mean": [0.5, 0.5, 0.5],
         "image_std": [0.5, 0.5, 0.5],
     }

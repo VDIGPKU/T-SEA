@@ -2,6 +2,7 @@ detlib/weights/
 data/
 checkpoints/
 .idea
+*.pth
 *.weights
 *.pt
 *.avi

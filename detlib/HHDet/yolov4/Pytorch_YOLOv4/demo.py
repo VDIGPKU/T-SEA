@@ -18,7 +18,7 @@ from tool.utils import *
 from tool.torch_utils import *
 from tool.darknet2pytorch import Darknet
 import torch
-import argparseshakedrop
+import argparse
 
 """hyper parameters"""
 use_cuda = True
@@ -36,11 +36,11 @@ def detect_cv2(cfgfile, weightfile, imgfile):
 
     num_classes = m.num_classes
     if num_classes == 20:
-        namesfile = 'preprocesser/voc.names'
+        namesfile = 'data/voc.names'
     elif num_classes == 80:
-        namesfile = 'preprocesser/coco.names'
+        namesfile = 'data/coco.names'
     else:
-        namesfile = 'preprocesser/x.names'
+        namesfile = 'data/x.names'
     class_names = load_class_names(namesfile)
 
     img = cv2.imread(imgfile)
@@ -80,11 +80,11 @@ def detect_cv2_camera(cfgfile, weightfile):
 
     num_classes = m.num_classes
     if num_classes == 20:
-        namesfile = 'preprocesser/voc.names'
+        namesfile = 'data/voc.names'
     elif num_classes == 80:
-        namesfile = 'preprocesser/coco.names'
+        namesfile = 'data/coco.names'
     else:
-        namesfile = 'preprocesser/x.names'
+        namesfile = 'data/x.names'
     class_names = load_class_names(namesfile)
 
     while True:
@@ -119,11 +119,11 @@ def detect_skimage(cfgfile, weightfile, imgfile):
 
     num_classes = m.num_classes
     if num_classes == 20:
-        namesfile = 'preprocesser/voc.names'
+        namesfile = 'data/voc.names'
     elif num_classes == 80:
-        namesfile = 'preprocesser/coco.names'
+        namesfile = 'data/coco.names'
     else:
-        namesfile = 'preprocesser/x.names'
+        namesfile = 'data/x.names'
     class_names = load_class_names(namesfile)
     
 
@@ -147,7 +147,7 @@ def get_args():
                         default='./weight/yolov4.weights',
                         help='path of trained model.', dest='weightfile')
     parser.add_argument('-imgfile', type=str,
-                        default='./preprocesser/giraffe.jpg',
+                        default='./data/giraffe.jpg',
                         help='path of your image file.', dest='imgfile')
     parser.add_argument('-torch', type=bool, default=True,
                         help='use torch weights')

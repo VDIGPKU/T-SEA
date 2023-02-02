@@ -4,7 +4,6 @@ DATA:
 
   TRAIN:
     IMG_DIR: 'data/INRIAPerson/Train/pos'
-    LAB_DIR: 'data/INRIAPerson/Train/labels'
 
 DETECTOR:
   NAME: ["faster_rcnn"]

@@ -19,7 +19,7 @@ class HHYolov3(DetectorBase):
         self.detector = load_model(model_path=detector_config_file, weights_path=model_weights).to(self.device)
         self.eval()
 
-    def __call__(self, batch_tensor, **kwargs):
+    def __call__(self, batch_tensor: torch.tensor, **kwargs):
         detections_with_grad = self.detector(batch_tensor) # torch.tensor([1, num, classes_num+4+1])
         preds = non_max_suppression(detections_with_grad, self.conf_thres, self.iou_thres)
         obj_confs = detections_with_grad[:, :, 4]

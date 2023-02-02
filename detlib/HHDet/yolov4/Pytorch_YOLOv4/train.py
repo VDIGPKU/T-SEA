@@ -171,7 +171,7 @@ class Yolo_loss(nn.Module):
         tgt_scale = torch.zeros(batchsize, self.n_anchors, fsize, fsize, 2).to(self.device)
         target = torch.zeros(batchsize, self.n_anchors, fsize, fsize, n_ch).to(self.device)
 
-        # labels = labels.cpu().preprocesser
+        # labels = labels.cpu().data
         nlabel = (labels.sum(dim=2) > 0).sum(dim=1)  # number of objects
 
         truth_x_all = (labels[:, :, 2] + labels[:, :, 0]) / (self.strides[output_id] * 2)
@@ -540,7 +540,7 @@ def get_args(**kwargs):
                         help='Load model from a .pth file')
     parser.add_argument('-g', '--gpu', metavar='G', type=str, default='-1',
                         help='GPU', dest='gpu')
-    parser.add_argument('-dir', '--preprocesser-dir', type=str, default=None,
+    parser.add_argument('-dir', '--data-dir', type=str, default=None,
                         help='dataset dir', dest='dataset_dir')
     parser.add_argument('-pretrained', type=str, default=None, help='pretrained yolov4.conv.137')
     parser.add_argument('-classes', type=int, default=80, help='dataset classes')

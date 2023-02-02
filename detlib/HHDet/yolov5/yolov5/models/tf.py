@@ -277,10 +277,10 @@ def parse_model(d, ch, model, imgsz):  # model_dict, input_channels(3)
     layers, save, c2 = [], [], ch[-1]  # layers, savelist, ch out
     for i, (f, n, m, args) in enumerate(d['backbone'] + d['head']):  # from, number, module, args
         m_str = m
-        m = eval(m) if isinstance(m, str) else m  # preprocesser strings
+        m = eval(m) if isinstance(m, str) else m  # eval strings
         for j, a in enumerate(args):
             try:
-                args[j] = eval(a) if isinstance(a, str) else a  # preprocesser strings
+                args[j] = eval(a) if isinstance(a, str) else a  # eval strings
             except NameError:
                 pass
 

@@ -10,7 +10,7 @@ def adapt_device(tensor):
 
 class ShakeDrop(torch.autograd.Function):
     """
-    never modify p_drop!!! Keep 0.5!!! because we always use "preprocesser" mode
+    never modify p_drop!!! Keep 0.5!!! because we always use "eval" mode
     if modified, when gate = 1, the return value is not equal to the expectation of input.
     you can modified alpha range, and keep the mean of alpha range = 1 please
     the reason is same with above

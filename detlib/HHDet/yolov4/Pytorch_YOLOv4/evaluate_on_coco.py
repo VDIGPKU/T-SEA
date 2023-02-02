@@ -29,7 +29,7 @@ from tool.torch_utils import do_detect
 
 
 def get_class_name(cat):
-    class_names = load_class_names("./preprocesser/coco.names")
+    class_names = load_class_names("./data/coco.names")
     if cat >= 1 and cat <= 11:
         cat = cat - 1
     elif cat >= 13 and cat <= 25:
@@ -142,7 +142,7 @@ def evaluate_on_coco(cfg, resFile):
                 label = get_class_name(cls_id)
                 draw.text((x1_truth, y1_truth), label, fill=rgb_label)
                 draw.rectangle([x1_truth, y1_truth, x2_truth, y2_truth], outline=rgb_label)
-            actual_image.save("./preprocesser/outcome/predictions_{}".format(gt_annotation_image_raw[0]["file_name"]))
+            actual_image.save("./data/outcome/predictions_{}".format(gt_annotation_image_raw[0]["file_name"]))
         else:
             print('please check')
             break
@@ -163,7 +163,7 @@ def test(model, annotations, cfg):
         return
     images = annotations["images"]
     # images = images[:10]
-    resFile = 'preprocesser/coco_val_outputs.json'
+    resFile = 'data/coco_val_outputs.json'
 
     if torch.cuda.is_available():
         use_cuda = 1
@@ -221,9 +221,9 @@ def test(model, annotations, cfg):
             print("warning: output from model after postprocessing is not a list, ignoring")
             return
 
-        # namesfile = 'preprocesser/coco.names'
+        # namesfile = 'data/coco.names'
         # class_names = load_class_names(namesfile)
-        # plot_boxes(img, boxes, 'preprocesser/outcome/predictions_{}.jpg'.format(image_id), class_names)
+        # plot_boxes(img, boxes, 'data/outcome/predictions_{}.jpg'.format(image_id), class_names)
 
     with open(resFile, 'w') as outfile:
         json.dump(boxes_json, outfile, default=myconverter)
@@ -239,7 +239,7 @@ def get_args(**kwargs):
                         help='Load model from a .pth file')
     parser.add_argument('-g', '--gpu', metavar='G', type=str, default='-1',
                         help='GPU', dest='gpu')
-    parser.add_argument('-dir', '--preprocesser-dir', type=str, default=None,
+    parser.add_argument('-dir', '--data-dir', type=str, default=None,
                         help='dataset dir', dest='dataset_dir')
     parser.add_argument('-gta', '--ground_truth_annotations', type=str, default='instances_val2017.json',
                         help='ground truth annotations file', dest='gt_annotations_path')

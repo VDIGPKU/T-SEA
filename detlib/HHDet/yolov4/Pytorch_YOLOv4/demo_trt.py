@@ -25,10 +25,10 @@ def find_sample_data(description="Runs a TensorRT Python sample", subfolder="", 
     Parses sample arguments.
     Args:
         description (str): Description of the sample.
-        subfolder (str): The subfolder containing preprocesser relevant to this sample
+        subfolder (str): The subfolder containing data relevant to this sample
         find_files (str): A list of filenames to find. Each filename will be replaced with an absolute path.
     Returns:
-        str: Path of preprocesser directory.
+        str: Path of data directory.
     Raises:
         FileNotFoundError
     '''
@@ -36,10 +36,10 @@ def find_sample_data(description="Runs a TensorRT Python sample", subfolder="", 
     # Standard command-line arguments for all samples.
     kDEFAULT_DATA_ROOT = os.path.join(os.sep, "usr", "src", "tensorrt", "data")
     parser = argparse.ArgumentParser(description=description, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-d", "--datadir", help="Location of the TensorRT sample preprocesser directory.", default=kDEFAULT_DATA_ROOT)
+    parser.add_argument("-d", "--datadir", help="Location of the TensorRT sample data directory.", default=kDEFAULT_DATA_ROOT)
     args, unknown_args = parser.parse_known_args()
 
-    # If preprocesser directory is not specified, use the default.
+    # If data directory is not specified, use the default.
     data_root = args.datadir
     # If the subfolder exists, append it to the path, otherwise use the provided path as-is.
     subfolder_path = os.path.join(data_root, subfolder)
@@ -48,19 +48,19 @@ def find_sample_data(description="Runs a TensorRT Python sample", subfolder="", 
         print("WARNING: " + subfolder_path + " does not exist. Trying " + data_root + " instead.")
         data_path = data_root
 
-    # Make sure preprocesser directory exists.
+    # Make sure data directory exists.
     if not (os.path.exists(data_path)):
-        raise FileNotFoundError(data_path + " does not exist. Please provide the correct preprocesser path with the -d option.")
+        raise FileNotFoundError(data_path + " does not exist. Please provide the correct data path with the -d option.")
 
     # Find all requested files.
     for index, f in enumerate(find_files):
         find_files[index] = os.path.abspath(os.path.join(data_path, f))
         if not os.path.exists(find_files[index]):
-            raise FileNotFoundError(find_files[index] + " does not exist. Please provide the correct preprocesser path with the -d option.")
+            raise FileNotFoundError(find_files[index] + " does not exist. Please provide the correct data path with the -d option.")
 
     return data_path, find_files
 
-# Simple helper preprocesser class that's a little nicer to use than a 2-tuple.
+# Simple helper data class that's a little nicer to use than a 2-tuple.
 class HostDeviceMem(object):
     def __init__(self, host_mem, device_mem):
         self.host = host_mem
@@ -103,7 +103,7 @@ def allocate_buffers(engine, batch_size):
 # This function is generalized for multiple inputs/outputs.
 # inputs and outputs are expected to be lists of HostDeviceMem objects.
 def do_inference(context, bindings, inputs, outputs, stream):
-    # Transfer input preprocesser to the GPU.
+    # Transfer input data to the GPU.
     [cuda.memcpy_htod_async(inp.device, inp.host, stream) for inp in inputs]
     # Run inference.
     context.execute_async(bindings=bindings, stream_handle=stream.handle)
@@ -132,11 +132,11 @@ def main(engine_path, image_path, image_size):
             boxes = detect(context, buffers, image_src, image_size, num_classes)
 
         if num_classes == 20:
-            namesfile = 'preprocesser/voc.names'
+            namesfile = 'data/voc.names'
         elif num_classes == 80:
-            namesfile = 'preprocesser/coco.names'
+            namesfile = 'data/coco.names'
         else:
-            namesfile = 'preprocesser/names'
+            namesfile = 'data/names'
 
         class_names = load_class_names(namesfile)
         plot_boxes_cv2(image_src, boxes[0], savename='predictions_trt.jpg', class_names=class_names)

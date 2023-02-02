@@ -22,7 +22,7 @@ def parse_model_config(path):
 
 
 def parse_data_config(path):
-    """Parses the preprocesser configuration file"""
+    """Parses the data configuration file"""
     options = dict()
     options['gpus'] = '0,1,2,3'
     options['num_workers'] = '10'

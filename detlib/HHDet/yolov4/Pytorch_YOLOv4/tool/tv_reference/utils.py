@@ -74,11 +74,11 @@ class SmoothedValue(object):
 
 def all_gather(data):
     """
-    Run all_gather on arbitrary picklable preprocesser (not necessarily tensors)
+    Run all_gather on arbitrary picklable data (not necessarily tensors)
     Args:
         data: any picklable object
     Returns:
-        list[preprocesser]: list of preprocesser gathered from each rank
+        list[data]: list of data gathered from each rank
     """
     world_size = get_world_size()
     if world_size == 1:
@@ -193,7 +193,7 @@ class MetricLogger(object):
                 'eta: {eta}',
                 '{meters}',
                 'time: {time}',
-                'preprocesser: {preprocesser}',
+                'data: {data}',
                 'max mem: {memory:.0f}'
             ])
         else:
@@ -203,7 +203,7 @@ class MetricLogger(object):
                 'eta: {eta}',
                 '{meters}',
                 'time: {time}',
-                'preprocesser: {preprocesser}'
+                'data: {data}'
             ])
         MB = 1024.0 * 1024.0
         for obj in iterable:

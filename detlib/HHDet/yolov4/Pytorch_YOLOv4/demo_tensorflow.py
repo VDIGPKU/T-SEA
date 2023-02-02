@@ -53,11 +53,11 @@ def demo_tensorflow(tfpb_file="./weight/yolov4.pb", image_path=None, print_senso
 
         num_classes = 80
         if num_classes == 20:
-            namesfile = 'preprocesser/voc.names'
+            namesfile = 'data/voc.names'
         elif num_classes == 80:
-            namesfile = 'preprocesser/coco.names'
+            namesfile = 'data/coco.names'
         else:
-            namesfile = 'preprocesser/names'
+            namesfile = 'data/names'
 
         class_names = load_class_names(namesfile)
         result = plot_boxes_cv2(image_src, boxes, savename=None, class_names=class_names)

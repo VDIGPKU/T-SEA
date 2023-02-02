@@ -142,8 +142,9 @@ def ignore_class(eva_args, cfg):
 
 
 def logger_msg(k, v):
-    print('{:>30} : {:<30}'.format(str(k), str(v)))
-
+    msg = '{:>30} : {:<30}'.format(str(k), str(v))
+    print(msg)
+    return msg
 
 def logger_banner(banner):
     dot = '------------------------------------------------------------'

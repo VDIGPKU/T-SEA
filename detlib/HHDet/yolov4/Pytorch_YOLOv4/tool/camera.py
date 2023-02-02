@@ -43,7 +43,7 @@ if __name__ == '__main__':
     CUDA = torch.cuda.is_available()
     num_classes = 80
     bbox_attrs = 5 + num_classes
-    class_names = load_class_names("preprocesser/coco.names")
+    class_names = load_class_names("data/coco.names")
 
     model = Darknet(cfgfile)
     model.load_weights(weightsfile)

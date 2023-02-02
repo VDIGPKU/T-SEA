@@ -1,0 +1,35 @@
+DATA:
+  CLASS_NAME_FILE: 'configs/namefiles/coco-80.names'
+  AUGMENT: 0
+
+  TRAIN:
+    IMG_DIR: 'data/INRIAPerson/Train/pos'
+    LAB_DIR:
+
+DETECTOR:
+  NAME: ["center_net"]
+  INPUT_SIZE: [416, 416]
+  BATCH_SIZE: 8
+  CONF_THRESH: 0.5
+  IOU_THRESH: 0.45
+
+  PERTURB:
+    GATE: null
+
+ATTACKER:
+  METHOD: "optim"
+  EPSILON: 255
+  MAX_EPOCH: 1000
+  ITER_STEP: 1
+  STEP_LR: 0.03
+  ATTACK_CLASS: '0'
+  LOSS_FUNC: "obj-tv"
+  tv_eta: 2.5
+  LR_SCHEDULER: 'plateau'
+
+  PATCH:
+    WIDTH: 300
+    HEIGHT: 300
+    SCALE: 0.2
+    INIT: "gray"
+    TRANSFORM: ['jitter', 'median_pool', 'rotate']
