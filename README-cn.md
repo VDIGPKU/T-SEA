@@ -16,7 +16,7 @@
 如果本仓库对您的工作有帮助，请帮忙点亮star~ Thanks! :-D
 
 ## 更新
-* 2023.01.27 - v1.2 Anchor-free检测器CenterNet已支持。
+* 2023.02.02 - v1.2 Anchor-free检测器CenterNet已支持。
 * 2022.11.22 - v1.1 修复已知的训练/测试脚本的运行bug。
 * 2022.11.18 - v1.0 创建本仓库。
 
@@ -42,11 +42,11 @@ pip install -r requirements.txt
 
 ### 运行
 
-**Patch Zoo** - 更多对抗补丁样本请查看[GoogleDrive](https://drive.google.com/drive/folders/1bGDf5fHVxajexKZUk22OMc5wag_adH-e?usp=share_link).
+**Patch Zoo** - 更多对抗补丁样本请查看[GoogleDrive](https://drive.google.com/drive/folders/1bGDf5fHVxajexKZUk22OMc5wag_adH-e?usp=share_link) | [百度云](https://pan.baidu.com/s/1U3L0cOOeUr0RfFf4rSfYmQ?pwd=f946).
 
-| Faster RCNN               | SSD                               | YoloV5                   |
-|---------------------------|----------------------------------|--------------------------|
-| ![](results/faster_rcnn-combine-demo.png) | ![](results/ssd-combine-demo.png) | ![](results/v5-demo.png) |
+| Faster RCNN               | SSD                               | Yolo V5                   | Yolo V3  |CenterNet |
+|---------------------------|----------------------------------|--------------------------|:------------:| ----|
+| ![](results/faster_rcnn-combine-demo.png) | ![](results/ssd-combine-demo.png) | ![](results/v5-demo.png) | ![](results/v3-combine.png) |![](results/centernet-combine.png) |
 
 #### 测试
 

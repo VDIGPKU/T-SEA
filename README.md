@@ -17,7 +17,7 @@ An official implementation of T-SEA, and also a framework provided to achieve un
 If T-SEA is helpful for your work, please help star this repo~ Thanks! :-D
 
 ## Update
-* 2023.01.27 - v1.2 An anchor-free detector, [CenterNet](https://github.com/xingyizhou/CenterNet), is now supported.
+* 2023.02.02 - v1.2 An anchor-free detector, [CenterNet](https://github.com/xingyizhou/CenterNet), is now supported.
 * 2022.11.22 - v1.1 Fix bugs for running train & eval scripts.
 * 2022.11.18 - v1.0 This repo is created.
 
@@ -47,7 +47,7 @@ See more details in [Docs](https://github.com/VDIGPKU/T-SEA/blob/main/readme/dat
 
 ### Run
 
-**Patch Zoo** - See more results in [here](https://drive.google.com/drive/folders/1bGDf5fHVxajexKZUk22OMc5wag_adH-e?usp=share_link).
+**Patch Zoo** - See more results in [GoogleDrive](https://drive.google.com/drive/folders/1bGDf5fHVxajexKZUk22OMc5wag_adH-e?usp=share_link) | [BaiduCloud](https://pan.baidu.com/s/1U3L0cOOeUr0RfFf4rSfYmQ?pwd=f946).
 
 | Faster RCNN               | SSD                               | Yolo V5                   | Yolo V3  |CenterNet |
 |---------------------------|----------------------------------|--------------------------|:------------:| ----|
