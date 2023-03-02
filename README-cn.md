@@ -1,4 +1,4 @@
-# T-SEA: Transfer-based Self-Ensemble Attack on Object Detection
+# T-SEA: Transfer-based Self-Ensemble Attack on Object Detection(CVPR'23)
 
 [**English**](https://github.com/VDIGPKU/T-SEA/blob/main/README.md)
 | [**中文**](https://github.com/VDIGPKU/T-SEA/blob/main/README-cn.md)
@@ -102,10 +102,20 @@ python train_optim.py -h
 框架概述请查看[文档](https://github.com/VDIGPKU/T-SEA/blob/main/readme/overview.md)
 ，同时对应代码模块中的README.md文件有关于模块中方法的详细阐述。
 
-## Acknowledgements
+## 致谢
 
 * AdvPatch - [**Paper**](http://openaccess.thecvf.com/content_CVPRW_2019/papers/CV-COPS/Thys_Fooling_Automated_Surveillance_Cameras_Adversarial_Patches_to_Attack_Person_Detection_CVPRW_2019_paper.pdf) 
-| [Source Code](https://gitlab.com/EAVISE/adversarial-yolo)
+| [源码仓库](https://gitlab.com/EAVISE/adversarial-yolo)
 
-## Contact Us
-If you have any problem about this work, please feel free to reach us out at `huanghao@stu.pku.edu.cn`.
+## Bibtex
+```
+@article{huang2022t,
+  title={T-SEA: Transfer-based Self-Ensemble Attack on Object Detection},
+  author={Huang, Hao and Chen, Ziyan and Chen, Huanran and Wang, Yongtao and Zhang, Kevin},
+  journal={arXiv preprint arXiv:2211.09773},
+  year={2022}
+}
+```
+
+## 联系我们
+如果您有关于这项工作的任何问题, 欢迎通过邮箱联系 `huanghao@stu.pku.edu.cn`.

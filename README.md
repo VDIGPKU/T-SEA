@@ -1,4 +1,4 @@
-# T-SEA: Transfer-based Self-Ensemble Attack on Object Detection
+# T-SEA: Transfer-based Self-Ensemble Attack on Object Detection(CVPR'23)
 
 [**English**](https://github.com/VDIGPKU/T-SEA/blob/main/README.md)
 | [**中文**](https://github.com/VDIGPKU/T-SEA/blob/main/README-cn.md)
@@ -107,6 +107,16 @@ See more details in [**README**](https://github.com/VDIGPKU/T-SEA/blob/main/read
 
 * AdvPatch - [**Paper**](http://openaccess.thecvf.com/content_CVPRW_2019/papers/CV-COPS/Thys_Fooling_Automated_Surveillance_Cameras_Adversarial_Patches_to_Attack_Person_Detection_CVPRW_2019_paper.pdf) 
 | [Source Code](https://gitlab.com/EAVISE/adversarial-yolo)
+
+## Citation
+```
+@article{huang2022t,
+  title={T-SEA: Transfer-based Self-Ensemble Attack on Object Detection},
+  author={Huang, Hao and Chen, Ziyan and Chen, Huanran and Wang, Yongtao and Zhang, Kevin},
+  journal={arXiv preprint arXiv:2211.09773},
+  year={2022}
+}
+```
 
 ## Contact Us
 If you have any problem about this work, please feel free to reach us out at `huanghao@stu.pku.edu.cn`.
