@@ -1,4 +1,4 @@
-# T-SEA: Transfer-based Self-Ensemble Attack on Object Detection(CVPR'23)
+# T-SEA: Transfer-based Self-Ensemble Attack on Object Detection(CVPR 2023)
 
 [**English**](https://github.com/VDIGPKU/T-SEA/blob/main/README.md)
 | [**中文**](https://github.com/VDIGPKU/T-SEA/blob/main/README-cn.md)
