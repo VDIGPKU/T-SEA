@@ -84,7 +84,7 @@ class BasicBlock(nn.Module):
 
         # out += identity
         if self.shake_drop:
-            out = identity + ShakeDropFunction.apply(out, self.training)
+            out = identity + ShakeDropFunction.apply(out)
         else:
             out += identity
         out = self.relu(out)
@@ -148,7 +148,7 @@ class Bottleneck(nn.Module):
 
         # out += identity
         if self.shake_drop:
-            out = identity + ShakeDropFunction.apply(out, self.training)
+            out = identity + ShakeDropFunction.apply(out)
         else:
             out += identity
         out = self.relu(out)

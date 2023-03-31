@@ -114,6 +114,12 @@ class HHYolov3(DetectorBase):
 
 ![](../readme/ShakeDrop.png)
 
+The implementation of the model ShakeDrop in T-SEA is a modified version to fit our attacks. 
+We perturb the detection model in both forward and backward propagation of every inference process. 
+
+Note that we only perturb models in inference time since the attack will not involve the model training process, which is different from the original [**ShakeDrop**](https://openreview.net/forum?id=S1NHaMW0b). 
+In this way, we keep the factor of multiplicative disturbance, `alpha` and `beta`,  as 1 by sampling from a continuous uniform distribution `U(1-e, 1+e)`.
+
 ```python
 class ShakeDrop(torch.autograd.Function):
     @staticmethod

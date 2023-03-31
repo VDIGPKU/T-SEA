@@ -3,12 +3,12 @@ from torch.autograd import Variable
 
 
 class ShakeDropFunction(torch.autograd.Function):
-    '''
+    """
     never modify p_drop!!! Keep 0.5!!! because we always use "eval" mode
     if modified, when gate = 1, the return value is not equal to the expectation of input.
     you can modify alpha range, and keep the mean of alpha range = 1 please
     the reason is same with above
-    '''
+    """
     @staticmethod
     def forward(ctx, x, p_drop=0.5, alpha_range=[0, 2]):
         gate = torch.cuda.FloatTensor([0]).bernoulli_(1 - p_drop)
