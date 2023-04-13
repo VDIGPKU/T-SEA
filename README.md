@@ -120,3 +120,7 @@ See more details in [**README**](https://github.com/VDIGPKU/T-SEA/blob/main/read
 
 ## Contact Us
 If you have any problem about this work, please feel free to reach us out at `huanghao@stu.pku.edu.cn`.
+
+## License
+
+The project is only free for academic research purposes, but needs authorization forcommerce. For commerce permission, please contact wyt@pku.edu.cn.
