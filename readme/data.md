@@ -7,7 +7,7 @@ Make sure you have the pre-trained detector-weight files and data prepared.
 
 #### Data
 ```bash
-# Download data and prepare labels in directory data/.
+# Download image data and prepare correspond labels in directory data/.
 # A demo file tree:
 ├── data
     ├── INRIAPerson
@@ -18,23 +18,19 @@ Make sure you have the pre-trained detector-weight files and data prepared.
                 ├── faster_rcnn-rescale-labels
                 ├── ground-truth-rescale-labels
                 ├── ...
-
-# You can generate detection labels by the given model 
-# or parse the annotations based on provided util scripts.
-# See more details in utils/preprocesser/README.md
 ```
 
 **Download**
-You can generate detection labels of your models, 
+You can generate detection labels of your custom models (parsing COCO labels is also supported), see more details in [README](utils/preprocesser/README.md).
 see more details in [**README**](https://github.com/VDIGPKU/T-SEA/tree/main/utils/preprocesser). 
-You can also download our experimental data from [**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
-| [**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3). The labels and patches are included.
+Also, we provide to download our experimental label data and patches from [**GoogleDrive**](https://drive.google.com/drive/folders/1GzdvnLgKGiPDfitc8bIa-a76e_2Mz_Fl?usp=share_link)
+| [**BaiduCloud**](https://pan.baidu.com/s/1WnjbEhYnipmGfC-TrhW-OQ?pwd=85d3).
 
 | Data        |                                             Generated Labels                                             |                                              Source                                              |                                            
 |-------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|
 | CCTVPerson  |  [GoogleDrive](https://drive.google.com/drive/folders/1R5DDNR0XPvSW-WyuCihDlPHf6C2XXb-o?usp=share_link)  |   [Human Detection](https://www.kaggle.com/datasets/constantinwerner/human-detection-dataset)    |
 | COCOperson  |  [GoogleDrive](https://drive.google.com/drive/folders/1zKO6yXllhReiDS04WKkb6JIkxvAW2s_9?usp=share_link)  |                            [HomePage](https://cocodataset.org/#home)                             |
-| INRIAPerson |  [GoogleDrive](https://drive.google.com/drive/folders/1zKO6yXllhReiDS04WKkb6JIkxvAW2s_9?usp=share_link)  |               [Paper](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)                |
+| INRIAPerson |  [GoogleDrive](https://drive.google.com/drive/folders/1J1k4fx7aiTQOvWjs7ioouiMBg3XABgmg?usp=drive_link)  |               [Paper](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)                |
 
 
 

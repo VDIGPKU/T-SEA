@@ -9,3 +9,4 @@ seaborn
 natsort
 kornia
 setuptools==59.5.0
+numpy

@@ -30,6 +30,7 @@ conda create -n tsea python=3.7
 conda activate tsea
 pip install -r requirements.txt
 ```
+Please refer to [PyTorch Docs](https://pytorch.org/get-started/previous-versions/) to install `torch` and `torchvision` for better compatibility.
 
  **Data**
 
