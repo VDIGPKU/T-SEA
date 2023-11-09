@@ -7,7 +7,6 @@ from tqdm import tqdm
 
 
 class ConvertCOCOToYOLO:
-
     """
     Takes in the path to COCO annotations and outputs YOLO annotations in multiple .txt files.
     COCO annotation are to be JSON formart as follows:
@@ -26,7 +25,6 @@ class ConvertCOCOToYOLO:
         }
         
     """
-
     def __init__(self, img_folder, json_path, save_path, name_file):
         self.img_folder = img_folder
         self.json_path = json_path
@@ -40,10 +38,10 @@ class ConvertCOCOToYOLO:
 
     def get_img_shape(self, img_path):
         img = cv2.imread(img_path)
-        assert img is not None, 'Image is None!'
+        assert img is not None, f'Illegal path {img_path}, image is None!'
         return img.shape
 
-    def convert_labels(self, img_path, x1, y1, x2, y2):
+    def convert_labels(self, img_path, x1, y1, x2, y2, resize=1):
         """
         Definition: Parses label files to extract label and bounding box
         coordinates. Converts (x1, y1, x1, y2) KITTI format to
@@ -60,10 +58,10 @@ class ConvertCOCOToYOLO:
         size = self.get_img_shape(img_path)
         xmax, xmin = sorting(x1, x2)
         ymax, ymin = sorting(y1, y2)
-        xmin /= size[1]
-        xmax /= size[1]
-        ymin /= size[0]
-        ymax /= size[0]
+        xmin /= size[1] * resize
+        xmax /= size[1] * resize
+        ymin /= size[0] * resize
+        ymax /= size[0] * resize
         return (xmin, ymin, xmax, ymax)
 
     def convert(self, annotation_key='annotations', img_id='image_id', cat_id='category_id', bbox_name='bbox', rescale_factor=1):
@@ -125,7 +123,7 @@ class ConvertCOCOToYOLO:
 if __name__ == "__main__":
     import sys
     from pathlib import Path
-    PROJECT_ROOT = str(Path(__file__).resolve().parents[1])
+    PROJECT_ROOT = str(Path(__file__).resolve().parents[2])
     sys.path.append(PROJECT_ROOT)
     print(PROJECT_ROOT, sys.path)
     from utils.parser import load_class_names
@@ -134,8 +132,8 @@ if __name__ == "__main__":
     target = 'val'
     postfix = '2017'
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--img_folder', type=str, help='image dir', default=f'./coco/{target}/{target}{postfix}')
-    parser.add_argument('-n', '--name_file', type=str, help='class name file dir', default=f'../configs/namefiles/coco80.names')
+    parser.add_argument('-i', '--img_folder', type=str, help='image dir', default=f'coco/{target}/{target}{postfix}')
+    parser.add_argument('-n', '--name_file', type=str, help='class name file dir', default=f'configs/namefiles/coco80.names')
     parser.add_argument('-j', '--json_path', type=str, help='coco obj annotation .json file path',
                         default=f'./coco/instances_{target}{postfix}.json')
     parser.add_argument('-s', '--save_path', type=str, help='label save dir', default=f'./coco/{target}/{target}{postfix}-labels/ground-truth')

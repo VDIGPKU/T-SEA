@@ -2,7 +2,10 @@ import torch
 import os
 import shutil
 import logging
-from .convertor import FormatConverter
+try:
+    from .convertor import FormatConverter
+except:
+    from convertor import FormatConverter
 
 
 def save_tensor(target_tensor, save_name, save_path='./'):
