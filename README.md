@@ -111,11 +111,12 @@ See more details in [**README**](https://github.com/VDIGPKU/T-SEA/blob/main/read
 
 ## Citation
 ```
-@article{huang2022t,
-  title={T-SEA: Transfer-based Self-Ensemble Attack on Object Detection},
+@inproceedings{huang2023t,
+  title={T-sea: Transfer-based self-ensemble attack on object detection},
   author={Huang, Hao and Chen, Ziyan and Chen, Huanran and Wang, Yongtao and Zhang, Kevin},
-  journal={arXiv preprint arXiv:2211.09773},
-  year={2022}
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={20514--20523},
+  year={2023}
 }
 ```
 
