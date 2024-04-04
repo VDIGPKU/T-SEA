@@ -11,7 +11,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(PWD))
 sys.path.append(PROJECT_DIR)
 
 from detlib import init_detectors
-from utils import ConfigParser
+from utils import ConfigParser, FormatConverter
 from utils.loader import dataLoader
 from utils.parser import load_class_names
 from utils.det_utils import plot_boxes_cv2
@@ -50,9 +50,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-dr', '--data_root', type=str, default=f"data/INRIAPerson/Tes/pos", help="Image data dir path")
     parser.add_argument('-sr', '--save_root', type=str, default=f'data/INRIAPerson/Test/labels', help="Label data dir path")
-    parser.add_argument('-cfg', '--config_file', type=str, default=f'advpatch/v5.yaml', help=".yaml config file, a relative path.")
+    parser.add_argument('-cfg', '--config_file', type=str, default=f'eval/coco80.yaml', help="A relative path of .yaml config file. Note that coco80.yaml includes only detectors based on coco80 labels.")
     parser.add_argument('-k', '--keep_scale', action="store_true", default=False, help="To keep value range of labels as [0, 1] if set keep_scale=True. Default: rescale to the input size.")
-    parser.add_argument('-i', '--imgs', action='store_true', help="To save imgs.")
+    parser.add_argument('-i', '--imgs', action="store_true", help="Save result imgs with detection boxes.")
     # parser.add_argument('-c', '--class', nargs='+', default=-1)
     args = parser.parse_args()
 
@@ -77,20 +77,21 @@ if __name__ == "__main__":
     for detector in detectors:
         fp = os.path.join(save_path, detector.name + postfix)
         os.makedirs(fp, exist_ok=True)
-        for index, img_tensor_batch in enumerate(tqdm(data_loader)):
+        for index, img_tensor in enumerate(tqdm(data_loader)):
             names = img_names[index:index + batch_size]
             img_name = names[0].split('/')[-1]
             all_preds = None
 
-            img_tensor_batch = img_tensor_batch.to(detector.device)
-            preds = detector(img_tensor_batch)['bbox_array']
+            img_tensor = img_tensor.to(detector.device)
+            preds = detector(img_tensor)['bbox_array']
 
             if args.imgs:
                 save_dir = f'./test/{detector.name}'
                 os.makedirs(save_dir, exist_ok=True)
-                img_numpy, img_numpy_int8 = detector.unnormalize(img_tensor_batch[0])
-                plot_boxes_cv2(img_numpy_int8, np.array(preds[0]), cfg.all_class_names,
+                img = FormatConverter.tensor2numpy_cv2(img_tensor[0].cpu())
+                # img_numpy, img_numpy_int8 = detector.unnormalize(img_tensor_batch[0])
+                plot_boxes_cv2(img, np.array(preds[0].cpu()), cfg.all_class_names,
                                savename=os.path.join(save_dir, img_name))
-            # os.path.join('./test/' + img_name)
+                
             # print(fp)
             utils.save_label(preds[0], fp, img_name, save_conf=False, rescale=not args.keep_scale)

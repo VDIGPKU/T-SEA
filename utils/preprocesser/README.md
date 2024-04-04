@@ -70,11 +70,13 @@ We provide **gen_det_labels.py** to help generate detection labels with help wit
 python ./utils/preprocesser/gen_det_labels.py \
 -dr=data/INRIAPerson/Test/pos \
 -sr=data/INRIAPerson/Test/labels \
--cfg=eval/coco80.yaml
-# Replace -cfg with 'eval/coco91.yaml' to generate labels from TorchDet models. 
+-cfg=eval/coco80.yaml \
+-i # save result imgs with detection boxes
+
+# Replace -cfg with 'eval/coco91.yaml' to generate labels from TorchDet models (working based on coco91 labels). 
 ```
 
-python ./utils/preprocesser/gen_det_labels.py \
+<!-- python ./utils/preprocesser/gen_det_labels.py \
 -dr=data/INRIAPerson/Test/pos \
 -sr=./labels \
--cfg=eval/coco80.yaml
+-cfg=eval/coco80.yaml -->

@@ -1,5 +1,8 @@
+**/__pycache__
+
 detlib/weights/
 data/
+test/
 checkpoints/
 .idea
 *.pth
