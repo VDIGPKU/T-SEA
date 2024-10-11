@@ -38,7 +38,7 @@ Please refer to [PyTorch Docs](https://pytorch.org/get-started/previous-versions
 |-------------|:--------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------:|
 | CCTVPerson  |  [GoogleDrive](https://drive.google.com/drive/folders/1R5DDNR0XPvSW-WyuCihDlPHf6C2XXb-o?usp=share_link)  |   [Human Detection](https://www.kaggle.com/datasets/constantinwerner/human-detection-dataset)    |
 | COCOperson  |  [GoogleDrive](https://drive.google.com/drive/folders/1zKO6yXllhReiDS04WKkb6JIkxvAW2s_9?usp=share_link)  |                            [HomePage](https://cocodataset.org/#home)                             |
-| INRIAPerson |  [GoogleDrive](https://drive.google.com/drive/folders/1zKO6yXllhReiDS04WKkb6JIkxvAW2s_9?usp=share_link)  |               [Paper](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)                |
+| INRIAPerson |  [GoogleDrive](https://drive.google.com/drive/folders/1J1k4fx7aiTQOvWjs7ioouiMBg3XABgmg?usp=drive_link)  |               [Paper](https://hal.inria.fr/docs/00/54/85/12/PDF/hog_cvpr2005.pdf)                |
 
 See more details in [Docs](https://github.com/VDIGPKU/T-SEA/blob/main/readme/data.md).
 
